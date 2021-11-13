@@ -1,1 +1,118 @@
 # Missing values
+
+```{r setup, include=FALSE}
+# this prevents package loading message from appearing in the rendered version of your problem set
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      echo = TRUE)
+```
+
+
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+```
+
+```{r}
+plot_missing <- function(dataset, percent = FALSE) {
+  # Creating tables for plots
+  missing_patterns <- data.frame(is.na(dataset)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>%
+    ungroup()
+
+  tidydata <- missing_patterns[,1:(ncol(missing_patterns)-1)] %>%
+            rownames_to_column("id") %>%
+            gather(key,value,-id)
+  
+  row_count <- missing_patterns %>%
+               rownames_to_column("id") %>%
+               mutate(row_percent=(count/sum(count)*100))
+  
+  num_rows_miss <- data.frame(colSums(is.na(dataset)))
+  colnames(num_rows_miss) <- c("count")
+  num_rows_miss <- num_rows_miss %>% mutate(row_percent=(count/nrow(dataset)*100)) %>% arrange(desc(count))
+
+  # Find the row index of the complete cases
+  complete_row <- as.character(which(apply(row_count[,2:(ncol(row_count)-2)], 1, function(r) all(r == FALSE))))
+  
+  # Specify the correct order of the variables according to row_count table
+  order_of_variables <- levels(fct_reorder(rownames(num_rows_miss),-num_rows_miss$count))
+  tidydata$key <- tidydata$key %>% factor(levels = order_of_variables)
+
+  tidydata$alp <- as.factor(ifelse(tidydata$id == complete_row, 1, 0.7))
+  
+  # Plot the missing pattern plots ---- Main Plot
+  #mid_name <- rownames(num_rows_miss)[nrow(num_rows_miss)%/%2+1]
+  mid_name<-order_of_variables[length(order_of_variables)/2]
+  p_main <- ggplot(tidydata,aes(x=key,y=fct_rev(fct_inorder(id)),fill=value, alpha=factor(alp))) +
+        geom_tile(color="white") +
+        scale_fill_manual(values = c("grey", "mediumpurple")) +
+        scale_alpha_manual(values= c("1"=1,"0.7"=0.7),guide="none") +
+        theme_bw() +
+        theme(legend.position = "none",
+              panel.grid.major = element_blank(), 
+              panel.grid.minor = element_blank()) +
+        labs(x="Variable",y="Missing Pattern") +
+        annotate(geom="text",x=mid_name,y=complete_row,label="complete cases")
+  
+  # Plot the counts/percentage for missing by patterns ---- Right-hand side Plot
+  row_count$alp <- as.factor(ifelse(row_count$id == complete_row, 1, 0.5))
+  
+  if (percent) {
+    p_right <- ggplot(row_count,aes(x=fct_rev(fct_inorder(id)),y=row_percent,alpha=factor(alp))) +
+          geom_bar(stat = "identity",fill="royalblue") +
+          coord_flip() +
+          ylim(0, 100) +
+          labs(y="% Row")
+  } else {
+    p_right <- ggplot(row_count,aes(x=fct_rev(fct_inorder(id)),y=count,alpha=factor(alp))) +
+          geom_bar(stat = "identity",fill="royalblue") +
+          coord_flip() +
+          labs(y="Row Count")
+  }
+  
+  p_right <- p_right + theme_bw() +
+                theme(axis.title.y=element_blank(),
+                      panel.grid.major.y = element_blank(),
+                      panel.grid.minor.y = element_blank()) +
+                scale_alpha_manual(values= c("1"=1,"0.5"=0.5), guide="none")
+  
+  # Plot the counts/percentage for missing by column ---- topside Plot
+  if (percent) {
+    p_top <- ggplot(num_rows_miss,aes(y=row_percent,x=fct_reorder(rownames(num_rows_miss),-row_percent))) +
+        geom_bar(stat = "identity",fill="royalblue",alpha=0.5) +
+        ylim(0, 100) +
+        labs(y=expression(paste("% rows \n missing:")))
+  } else {
+    p_top <- ggplot(num_rows_miss,aes(y=count,x=fct_reorder(rownames(num_rows_miss),-count))) + 
+        geom_bar(stat = "identity",fill="royalblue",alpha=0.5) +
+        labs(y=expression(paste("num rows \n missing:")))
+  }
+  
+  p_top <- p_top + theme_bw() +
+              theme(axis.title.x=element_blank(),
+                    panel.grid.major.x = element_blank(),
+                    panel.grid.minor.x = element_blank()) +
+              ggtitle("Missing Value Patterns")
+  
+  # Use patchwork to put 3 plots together
+  p_final <- p_top + plot_spacer() + p_main + p_right + plot_layout(widths = c(2, 0.5),heights = c(0.5,2))
+  
+  return(p_final)
+}
+```
+
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
+  webdata <- read_html("https://en.wikipedia.org/wiki/Apple_Inc.")
+  table <- webdata %>% html_table()
+  financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+  colnames(financeTable) <- abbreviate(names(financeTable), minlength=2)
+  plot_missing(financeTable, FALSE)
+  #plot_missing(financeTable, TRUE)
+}
+```
