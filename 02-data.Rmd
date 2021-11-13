@@ -1,6 +1,6 @@
 # Data sources
 
-Anshuo and Cyndi are both responsible for collecting the data. Our data mainly from Wikipedia. There are many useful and official dataset in Wikipedia.
+Anshuo and Shengdi are both responsible for collecting the data. Our data mainly from Wikipedia. There are many useful and official dataset in Wikipedia.
 
 1. List of iOS and iPadOS devices: https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices
 Explanation: This dataset contains a list of Apple’s devices and compares different features of those products. For instance, it compares power, storage, charging rate, and cameras for each Apple device. It can help us to visualize the difference of features among each generation of devices. By looking at the changes among those devices, we can estimate how fast they change in the past years. 
