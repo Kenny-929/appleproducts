@@ -7,3 +7,18 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+Apple is one of the biggest technology companies in the world today. They have launched various products such as IPhone, IPad, MacBook, and so forth. They provide so many opportunities for the customers by offering a wide range of products. They have come up with everything a person may want and desire. Apple is one of the most valued brand all over the world. The way Apple design their products and the strategies they use to advertise their products contribute to the success of the company. 
+
+Our final project for EDAV class will employ some data visualization tools to analyze how Apple changes its products over generations. Specifically, we will analyze the change in screen sizes, camera pixels, and battery life, etc. Then based on these changes, we will explore Apple’s financial data to discover any relationship between the change of the products with the company’s sales and revenues. We will also discuss and analyze missing values. In the end, we will compare the characteristics of changes in Apple products with other popular smartphones to learn more about the common changes in smartphones. We aim to discover more about the vast technology market from those common changes. 
+
+The questions we are interested in studying in this project:
+
+1. By comparing different features, like size, camera pixel, and battery life, of Apple products and how fast they were changing during these years, can we infer how customers' needs had been changed?
+
+2. How did Apple’s financial data change over the years, and how did the change inform us of the financial circumstances of Apple? How did the sales and revenue change and what could cause those changes?
+
+3. Are the changes of Apple products specific to Apple itself? Can we see similar changes in other popular smartphones? What can we learn about the technology market from the general changes in all smartphones? 
+
+4. Are customers satisfied with those changes? How did they affect customer satisfaction?
+
+
