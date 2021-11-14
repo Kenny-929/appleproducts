@@ -6,6 +6,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE,
                       echo = TRUE)
 ```
 
+For this section, we did the missing value analysis on the [finance table](https://en.wikipedia.org/wiki/Apple_Inc.) we found on wikipedia. 
 
 ```{r}
 library(rvest)
@@ -113,6 +114,24 @@ if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
   financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
   colnames(financeTable) <- abbreviate(names(financeTable), minlength=2)
   plot_missing(financeTable, FALSE)
-  #plot_missing(financeTable, TRUE)
 }
 ```
+```{r}
+plot_missing(financeTable, TRUE)
+```
+
+We want to discover the reason behind the missing values, so we first print out the missing patterns of the finance table.
+```{r}
+summary(financeTable)
+missing_fin <- data.frame(is.na(financeTable))
+missing_fin
+```
+
+As we can see from the missing pattern table, the missing values of employees occur in the first five rows. Since our year
+column is in chronological order, we know that the five missing rows in Employees column is positively correlated with the year column. Therefore, we want to print out the first five missing rows and the next few employees rows without missing values. By comparing the values of these rows, we may discover the reason behind the missing values in Employees column in the first five years.
+```{r}
+financeTable[1:6,]
+```
+Missing Value Interpretation:
+  After we apply the `plot_missing` function on the finance table from Wikipedia, we find that Apple's finance table only has two missing patterns, and the missing values are all occurred in the employee’s column. Also, by looking at the top plot of the missing graph, we find out that there are five rows of missing values in the finance table. The year of these missing values is from 2000 to 2004, which is very early, so the employee’s data could be missing. This could be one of the main reasons. \
+	From 2004 to 2005, we can see that the change is more significant compared to the changes in previous years. Thus, we think another possible reason could be that from 2000 - 2004, the number of employees does not matter too much; while from 2004-2005, the company’s rapid development, more information is needed. So since then, the number of employees started to be collected.

@@ -165,6 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="missing-values" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Missing values</h1>
+<p>For this section, we did the missing value analysis on the <a href="https://en.wikipedia.org/wiki/Apple_Inc.">finance table</a> we found on wikipedia.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="missing-values.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
 <span id="cb1-2"><a href="missing-values.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(robotstxt)</span>
 <span id="cb1-3"><a href="missing-values.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) </span>
@@ -263,9 +264,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-4"><a href="missing-values.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  financeTable <span class="ot">&lt;-</span> table[[<span class="dv">4</span>]] <span class="sc">%&gt;%</span> <span class="fu">replace_with_na_if</span>(<span class="at">.predicate =</span> is.character, <span class="at">condition =</span> <span class="sc">~</span>.x <span class="sc">%in%</span> (<span class="st">&quot;N/A&quot;</span>))</span>
 <span id="cb3-5"><a href="missing-values.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(financeTable) <span class="ot">&lt;-</span> <span class="fu">abbreviate</span>(<span class="fu">names</span>(financeTable), <span class="at">minlength=</span><span class="dv">2</span>)</span>
 <span id="cb3-6"><a href="missing-values.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_missing</span>(financeTable, <span class="cn">FALSE</span>)</span>
-<span id="cb3-7"><a href="missing-values.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#plot_missing(financeTable, TRUE)</span></span>
-<span id="cb3-8"><a href="missing-values.html#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb3-7"><a href="missing-values.html#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="missing-values.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(financeTable, <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>We want to discover the reason behind the missing values, so we first print out the missing patterns of the finance table.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="missing-values.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(financeTable)</span></code></pre></div>
+<pre><code>##       Yr                RmU                NimU               TamU                Em           
+##  Length:21          Length:21          Length:21          Length:21          Length:21         
+##  Class :character   Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="missing-values.html#cb7-1" aria-hidden="true" tabindex="-1"></a>missing_fin <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">is.na</span>(financeTable))</span>
+<span id="cb7-2"><a href="missing-values.html#cb7-2" aria-hidden="true" tabindex="-1"></a>missing_fin</span></code></pre></div>
+<pre><code>##       Yr   RmU  NimU  TamU    Em
+## 1  FALSE FALSE FALSE FALSE  TRUE
+## 2  FALSE FALSE FALSE FALSE  TRUE
+## 3  FALSE FALSE FALSE FALSE  TRUE
+## 4  FALSE FALSE FALSE FALSE  TRUE
+## 5  FALSE FALSE FALSE FALSE  TRUE
+## 6  FALSE FALSE FALSE FALSE FALSE
+## 7  FALSE FALSE FALSE FALSE FALSE
+## 8  FALSE FALSE FALSE FALSE FALSE
+## 9  FALSE FALSE FALSE FALSE FALSE
+## 10 FALSE FALSE FALSE FALSE FALSE
+## 11 FALSE FALSE FALSE FALSE FALSE
+## 12 FALSE FALSE FALSE FALSE FALSE
+## 13 FALSE FALSE FALSE FALSE FALSE
+## 14 FALSE FALSE FALSE FALSE FALSE
+## 15 FALSE FALSE FALSE FALSE FALSE
+## 16 FALSE FALSE FALSE FALSE FALSE
+## 17 FALSE FALSE FALSE FALSE FALSE
+## 18 FALSE FALSE FALSE FALSE FALSE
+## 19 FALSE FALSE FALSE FALSE FALSE
+## 20 FALSE FALSE FALSE FALSE FALSE
+## 21 FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>As we can see from the missing pattern table, the missing values of employees occur in the first five rows. Since our year
+column is in chronological order, we know that the five missing rows in Employees column is positively correlated with the year column. Therefore, we want to print out the first five missing rows and the next few employees rows without missing values. By comparing the values of these rows, we may discover the reason behind the missing values in Employees column in the first five years.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="missing-values.html#cb9-1" aria-hidden="true" tabindex="-1"></a>financeTable[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,]</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   Yr        RmU    NimU  TamU   Em    
+##   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; 
+## 1 2000[631] 7,983  786   6,803  &lt;NA&gt;  
+## 2 2001[632] 5,363  −25   6,021  &lt;NA&gt;  
+## 3 2002[633] 5,742  65    6,298  &lt;NA&gt;  
+## 4 2003[634] 6,207  69    6,815  &lt;NA&gt;  
+## 5 2004[635] 8,279  274   8,050  &lt;NA&gt;  
+## 6 2005[636] 13,931 1,328 11,516 14,800</code></pre>
+<p>Missing Value Interpretation:
+After we apply the <code>plot_missing</code> function on the finance table from Wikipedia, we find that Apple’s finance table only has two missing patterns, and the missing values are all occurred in the employee’s column. Also, by looking at the top plot of the missing graph, we find out that there are five rows of missing values in the finance table. The year of these missing values is from 2000 to 2004, which is very early, so the employee’s data could be missing. This could be one of the main reasons.<br />
+From 2004 to 2005, we can see that the change is more significant compared to the changes in previous years. Thus, we think another possible reason could be that from 2000 - 2004, the number of employees does not matter too much; while from 2004-2005, the company’s rapid development, more information is needed. So since then, the number of employees started to be collected.</p>
 
 </div>
             </section>
