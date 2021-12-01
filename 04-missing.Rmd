@@ -3,7 +3,7 @@
 ```{r, include=FALSE}
 # this prevents package loading message from appearing in the rendered version of your problem set
 knitr::opts_chunk$set(warning = FALSE, message = FALSE,
-                      echo = TRUE)
+                      echo = FALSE)
 ```
 
 ## Missing Values Patterns Plots
@@ -108,10 +108,12 @@ plot_missing <- function(dataset, percent = FALSE) {
 }
 ```
 
-
+Missing Values Patterns Plots for Counts
 ```{r}
 plot_missing(financeTable, FALSE)
 ```
+
+Missing Values Patterns Plots for Percent
 ```{r}
 plot_missing(financeTable, TRUE)
 ```
@@ -130,6 +132,6 @@ column is in chronological order, we know that the five missing rows in Employee
 ```{r}
 financeTable[1:6,]
 ```
-Missing Value Interpretation:
+
   After we apply the `plot_missing` function on the finance table from Wikipedia, we find that Apple's finance table only has two missing patterns, and the missing values are all occurred in the employee’s column. Also, by looking at the top plot of the missing graph, we find out that there are five rows of missing values in the finance table. The year of these missing values is from 2000 to 2004, which is very early, so the employee’s data could be missing. This could be one of the main reasons. \
 	From 2004 to 2005, we can see that the change is more significant compared to the changes in previous years. Thus, we think another possible reason could be that from 2000 - 2004, the number of employees does not matter too much; while from 2004-2005, the company’s rapid development, more information is needed. So since then, the number of employees started to be collected.

@@ -3,7 +3,7 @@
 ```{r, include=FALSE}
 # this prevents package loading message from appearing in the rendered version of your problem set
 knitr::opts_chunk$set(warning = FALSE, message = FALSE,
-                      echo = TRUE)
+                      echo = FALSE)
 ```
 
 ```{r}
@@ -14,10 +14,23 @@ library(patchwork)
 library(naniar)
 ```
 
-## Apple Products (iPhone, iPad, Mac) Features Data
+We have several different datasets from Wikipedia. We will divide them into four different sections and do the data transformation separately. Later, we will use these cleaned data to plot and answer our questions in the introduction.
 
+## iPhone Features Data
 
-## Finance Data
+The dataset of Apple products features is very large, and it contains a lot of information in various aspects. We will mainly focus on certain features (including Release date, Display, Rear Camera) of iPhone for all available models. Firstly, we will merge several tables of different models, and then separate them into smaller tables for different features.
+
+iPhone Release Date 
+
+iPhone Display table
+
+iPhone Rear Camera table
+
+iPhone supported table
+
+## Apple Finance Data
+
+The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. We also change the column names to be more concise.
 
 ```{r}
 if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
@@ -28,8 +41,22 @@ if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
 }
 ```
 
-## Smartphones Comparison Data
+
+## Customer Satisfaction Data
+
+Initially, we want to use the data from [this page](https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/), but the format of the data is picture instead of tables. Then we found [this table](https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones) with the same information, and we extracted the table from here and modified the column names.
+
+```{r}
+if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones")) {
+  csdata <- read_html("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones")
+  table <- csdata %>% html_table()
+  cstable <- table[[1]]
+  colnames(cstable) <- cstable[2,]
+  cstable <- tail(cstable, -2)
+}
+```
+
+## Comparison with Samsung Galaxy S Smartphones
 
 
-## Users Satisfaction Data
 

@@ -20,6 +20,5 @@ Explanation: This dataset includes the timeline of the release of each apple pro
 6. Comparison of Smartphones: https://en.wikipedia.org/wiki/Comparison_of_smartphones 
 Explanation: This dataset compares different brands of smartphones, including iPhones. It helps us to see the changes in other smartphones, and then relate them to the changes we discover in iPhones. This relationship helps us to answer whether the change of Apple products is unique to itself. If the change can be seen in all smartphones, then we will discover more about the general technology market. 
 
-7. Customer Satisfaction Index: https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/ 
-https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones 
+7. Customer Satisfaction Index: https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones 
 Explanation: This dataset shows how customers are satisfied with iPhones and smartphones of other brands. We will analyze how customers reacted to the products’ changes over the years. 
