@@ -1,7 +1,13 @@
 introduction
 data-sources
 data-transformation
+apple-products-iphone-ipad-mac-features-data
+finance-data
+smartphones-comparison-data
+users-satisfaction-data
 missing-values
+missing-values-patterns-plots
+reasoning-and-intepretation
 results
 interactive-component
 conclusion

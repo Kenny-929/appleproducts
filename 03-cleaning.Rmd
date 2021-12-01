@@ -1,1 +1,35 @@
 # Data transformation
+
+```{r, include=FALSE}
+# this prevents package loading message from appearing in the rendered version of your problem set
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      echo = TRUE)
+```
+
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+```
+
+## Apple Products (iPhone, iPad, Mac) Features Data
+
+
+## Finance Data
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
+  webdata <- read_html("https://en.wikipedia.org/wiki/Apple_Inc.")
+  table <- webdata %>% html_table()
+  financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+  colnames(financeTable) <- abbreviate(names(financeTable), minlength=2)
+}
+```
+
+## Smartphones Comparison Data
+
+
+## Users Satisfaction Data
+

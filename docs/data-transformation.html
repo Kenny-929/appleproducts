@@ -24,7 +24,7 @@
 <meta name="author" content="Anshuo Wu, Shengdi Chen" />
 
 
-<meta name="date" content="2021-11-13" />
+<meta name="date" content="2021-12-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -139,8 +139,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#apple-products-iphone-ipad-mac-features-data"><i class="fa fa-check"></i><b>3.1</b> Apple Products (iPhone, iPad, Mac) Features Data</a></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#finance-data"><i class="fa fa-check"></i><b>3.2</b> Finance Data</a></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#smartphones-comparison-data"><i class="fa fa-check"></i><b>3.3</b> Smartphones Comparison Data</a></li>
+<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#users-satisfaction-data"><i class="fa fa-check"></i><b>3.4</b> Users Satisfaction Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#missing-values-patterns-plots"><i class="fa fa-check"></i><b>4.1</b> Missing Values Patterns Plots</a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#reasoning-and-intepretation"><i class="fa fa-check"></i><b>4.2</b> Reasoning and Intepretation</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -165,7 +175,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-transformation.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb1-2"><a href="data-transformation.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(robotstxt)</span>
+<span id="cb1-3"><a href="data-transformation.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) </span>
+<span id="cb1-4"><a href="data-transformation.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-5"><a href="data-transformation.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span></code></pre></div>
+<div id="apple-products-iphone-ipad-mac-features-data" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Apple Products (iPhone, iPad, Mac) Features Data</h2>
+</div>
+<div id="finance-data" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Finance Data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-transformation.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">paths_allowed</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Apple_Inc.&quot;</span>)) {</span>
+<span id="cb2-2"><a href="data-transformation.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  webdata <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://en.wikipedia.org/wiki/Apple_Inc.&quot;</span>)</span>
+<span id="cb2-3"><a href="data-transformation.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> webdata <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span>
+<span id="cb2-4"><a href="data-transformation.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  financeTable <span class="ot">&lt;-</span> table[[<span class="dv">4</span>]] <span class="sc">%&gt;%</span> <span class="fu">replace_with_na_if</span>(<span class="at">.predicate =</span> is.character, <span class="at">condition =</span> <span class="sc">~</span>.x <span class="sc">%in%</span> (<span class="st">&quot;N/A&quot;</span>))</span>
+<span id="cb2-5"><a href="data-transformation.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(financeTable) <span class="ot">&lt;-</span> <span class="fu">abbreviate</span>(<span class="fu">names</span>(financeTable), <span class="at">minlength=</span><span class="dv">2</span>)</span>
+<span id="cb2-6"><a href="data-transformation.html#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="smartphones-comparison-data" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Smartphones Comparison Data</h2>
+</div>
+<div id="users-satisfaction-data" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Users Satisfaction Data</h2>
 
+</div>
 </div>
             </section>
 
