@@ -20,13 +20,66 @@ We have several different datasets from Wikipedia. We will divide them into four
 
 The dataset of Apple products features is very large, and it contains a lot of information in various aspects. We will mainly focus on certain features (including Release date, Display, Rear Camera) of iPhone for all available models. Firstly, we will merge several tables of different models, and then separate them into smaller tables for different features.
 
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+library(janitor)
+if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")) {
+  webdata <- read_html("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")
+  table <- webdata %>% html_table()
+  iphmodel_inprod <- table[[4]][-1,] 
+  iphmodel_dispr<- table[[5]][-1,] 
+      
+  #Display Info Table
+  display1 <- iphmodel_inprod[c(3:20),-1] 
+  display2 <- iphmodel_dispr[c(3:21),-1] %>% select(-c(17,18,19))
+  display <- full_join(display1,display2)
+  
+  #Rear Camera Info table
+  rearcam1 <- iphmodel_inprod[c(58:93),-1]
+  rearcam2 <- iphmodel_dispr[c(59:94),-1] %>% select(-c(17,18,19))
+  rearcam <- inner_join(rearcam1,rearcam2)
+  rearcam <- rearcam[!duplicated(rearcam), ]
+}
+```
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")) {
+  webdata2 <- read_html("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")
+  table2 <- webdata2 %>% html_table()
+  iphGen <- table2[[3]] %>% select(-9)
+  
+  #release date table
+  iph_rel<-iphGen %>% select(c(2,4))
+  
+  #supported table
+  iph_sup <- iphGen %>% select (c(2,7))
+              
+}
+```
+
 iPhone Release Date 
+```{r}
+summary(iph_rel)
+```
 
 iPhone Display table
+```{r}
+summary(display)
+```
 
 iPhone Rear Camera table
+```{r}
+summary(rearcam)
+```
 
 iPhone supported table
+```{r}
+summary(iph_sup)
+```
 
 ## Apple Finance Data
 
