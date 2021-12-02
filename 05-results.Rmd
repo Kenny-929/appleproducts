@@ -6,12 +6,74 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE,
                       echo = FALSE)
 ```
 
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+library(janitor)
+library(vistime)
+```
 
 ## Different iPhone Features Changing
 
-### Display Table
+First of all, we will analyze several different features of all models of iPhones.
 
-### Rear Camera Table
+### Release and Discontinued Date
+According to the cleaned table of released and discontinued data table, we plot this timeline 
+```{r}
+vistime(iph_rel, col.event="Model", col.start = "ReleaseDate", col.end = "DisconDate", optimize_y = TRUE)
+```
+
+```{r}
+ggplot(iph_rel, aes(x=ReleaseYear)) +
+  geom_bar() +
+  ggtitle("Number of iPhone Models Released in Each Year")
+```
+
+According to these two plots, we are able to see that Apple gradually introduced more and more products over the year. 
+
+### iPhone Display Table
+
+```{r}
+library(parcoords)
+parcoords(r_display
+          , brushMode = "1D-axes"
+          , reorderable = T
+          , queue = T
+          , color = list(
+            colorScale = "scaleOrdinal"
+            ,colorScheme = "schemeCategory10"
+          )
+          , withD3 = TRUE)
+
+```
+
+Interactive parallel coordinates plot for display???????????
+
+```{r}
+r_display %>%
+  ggplot(aes(x=fct_inorder(Model), y=ScreenSizeIn)) +
+  # geom_smooth(formula = y ~ x, method = "lm") + ???????
+  geom_point() +
+  theme(axis.text.x=element_text(angle=60,hjust = 1)) +
+  ggtitle("iPhone Screen Size (in) of Different Models")
+```
+
+```{r}
+r_display %>% 
+  ggplot(aes(x=ResX, y=ResY)) +
+  geom_point() +
+  geom_text(aes(label=Model), hjust=0, vjust=0) +
+  # check_overlap???? avoid overlap? less model okay?
+  ggtitle("iPhone Resolution of Different Models")
+```
+
+
+
+### iPhone Rear Camera Table
+
 
 ### Supported Date Table ???? 
 

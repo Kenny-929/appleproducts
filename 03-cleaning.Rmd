@@ -12,21 +12,20 @@ library(robotstxt)
 library(tidyverse) 
 library(patchwork)
 library(naniar)
+library(janitor)
+library(lubridate)
 ```
 
 We have several different datasets from Wikipedia. We will divide them into four different sections and do the data transformation separately. Later, we will use these cleaned data to plot and answer our questions in the introduction.
 
 ## iPhone Features Data
 
-The dataset of Apple products features is very large, and it contains a lot of information in various aspects. We will mainly focus on certain features (including Release date, Display, Rear Camera) of iPhone for all available models. Firstly, we will merge several tables of different models, and then separate them into smaller tables for different features.
+The dataset of Apple products features is very large, and it contains a lot of information in various aspects. We will mainly focus on certain features (including Release date, Display, Rear Camera) of iPhone for all available models. Firstly, we will merge several tables of different models, and then separate them into smaller tables for different features. 
+
+For release date table, we added another column to store the date information in the correct format.
+For the display data table, we will focus on the screen size and the resolution information. We added extra column for screen size in inch, resolution x and resolution y.
 
 ```{r}
-library(rvest)
-library(robotstxt)
-library(tidyverse) 
-library(patchwork)
-library(naniar)
-library(janitor)
 if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")) {
   webdata <- read_html("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")
   table <- webdata %>% html_table()
@@ -36,12 +35,22 @@ if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices"
   #Display Info Table
   display1 <- iphmodel_inprod[c(3:20),-1] 
   display2 <- iphmodel_dispr[c(3:21),-1] %>% select(-c(17,18,19))
-  display <- full_join(display1,display2)
+  display <- full_join(display2,display1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+  display[20, 1] = "Typical Max brightness"
+  
+  r_display <- data.frame(t(display))
+  colnames(r_display) <- r_display[1,]
+  r_display <- tail(r_display, -1) 
+  colnames(r_display) <- gsub(" ", "", colnames(r_display))
+  r_display <- add_column(r_display, ScreenSizeIn = parse_number(r_display$ScreenSize))
+  r_display <- add_column(r_display, ResX = parse_number(r_display$Resolution))
+  r_display <- add_column(r_display, ResY = parse_number(str_sub(r_display$Resolution, start=5)))
+  r_display <- tibble::rownames_to_column(r_display, "Model")
   
   #Rear Camera Info table
   rearcam1 <- iphmodel_inprod[c(58:93),-1]
   rearcam2 <- iphmodel_dispr[c(59:94),-1] %>% select(-c(17,18,19))
-  rearcam <- inner_join(rearcam1,rearcam2)
+  rearcam <- inner_join(rearcam2,rearcam1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
   rearcam <- rearcam[!duplicated(rearcam), ]
 }
 ```
@@ -53,11 +62,13 @@ if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices"
   iphGen <- table2[[3]] %>% select(-9)
   
   #release date table
-  iph_rel<-iphGen %>% select(c(2,4))
+  iph_rel<-iphGen %>% select(c(2,4,5))
+  iph_rel <- iph_rel %>% add_column(ReleaseDate = as.Date(str_sub(.$Released, -11, -2)))
+  iph_rel <- iph_rel %>% add_column(ReleaseYear = format(.$ReleaseDate, format="%Y"))
+  iph_rel <- iph_rel %>% add_column(DisconDate = if_else(.$Discontinued == "In production", Sys.Date(), as.Date((str_sub(.$Discontinued, -11, -2)))))
   
   #supported table
   iph_sup <- iphGen %>% select (c(2,7))
-              
 }
 ```
 
@@ -68,7 +79,7 @@ summary(iph_rel)
 
 iPhone Display table
 ```{r}
-summary(display)
+summary(r_display)
 ```
 
 iPhone Rear Camera table
@@ -76,7 +87,7 @@ iPhone Rear Camera table
 summary(rearcam)
 ```
 
-iPhone supported table
+iPhone supported months table
 ```{r}
 summary(iph_sup)
 ```
@@ -92,6 +103,7 @@ if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
   financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
   colnames(financeTable) <- abbreviate(names(financeTable), minlength=2)
 }
+summary(financeTable)
 ```
 
 
@@ -107,6 +119,7 @@ if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/b
   colnames(cstable) <- cstable[2,]
   cstable <- tail(cstable, -2)
 }
+summary(cstable)
 ```
 
 ## Comparison with Samsung Galaxy S Smartphones

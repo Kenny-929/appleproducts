@@ -10,8 +10,9 @@ missing-values-patterns-plots
 reasoning-and-intepretation
 results
 different-iphone-features-changing
-display-table
-rear-camera-table
+release-and-discontinued-date
+iphone-display-table
+iphone-rear-camera-table
 supported-date-table
 apple-fianance-data-analysis
 customer-satisfaction
