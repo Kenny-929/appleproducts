@@ -58,7 +58,7 @@ r_display <- add_column(r_display, ScreenSizeIn = parse_number(r_display$ScreenS
 r_display <- add_column(r_display, ResX = parse_number(r_display$Resolution))
 r_display <- add_column(r_display, ResY = parse_number(str_sub(r_display$Resolution, start=5)))
 
-r_display <- r_display[-c(2,4,6,12,13,22,24)]
+r_display <- r_display[-c(2,3,4,5,6,10,12,13,14,17,22,23,24)]
 ```
 
 ```{r}

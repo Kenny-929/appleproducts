@@ -147,51 +147,44 @@ For the display data table, we will focus on the screen size and the resolution 
 ##                                                           3rd Qu.:2020-04-24                      3rd Qu.:2021-09-14  
 ##                                                           Max.   :2021-09-24                      Max.   :2021-12-02</code></pre>
 <p>iPhone Display table</p>
-<pre><code>##     Model            Backlight          Technology        PixelDensity(ppi)  AspectRatio        TypicalMaxbrightness( cd⁄m2)
-##  Length:23          Length:23          Length:23          Length:23          Length:23          Length:23                   
-##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character            
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character            
-##                                                                                                                             
-##                                                                                                                             
-##                                                                                                                             
-##  HDRMaxbrightness( cd⁄m2) Contrastratio(typical) WideColorDisplay(DisplayP3) TrueToneDisplay    ProMotionDisplay    HDRDisplay       
-##  Length:23                Length:23              Length:23                   Length:23          Length:23          Length:23         
-##  Class :character         Class :character       Class :character            Class :character   Class :character   Class :character  
-##  Mode  :character         Mode  :character       Mode  :character            Mode  :character   Mode  :character   Mode  :character  
-##                                                                                                                                      
-##                                                                                                                                      
-##                                                                                                                                      
-##  HDR10Content       DolbyVision           Taptic          TypicalMaxbrightness  HDRdisplay         ScreenSizeIn        ResX     
-##  Length:23          Length:23          Length:23          Length:23            Length:23          Min.   :4.000   Min.   :1136  
-##  Class :character   Class :character   Class :character   Class :character     Class :character   1st Qu.:5.420   1st Qu.:1792  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character     Mode  :character   Median :5.850   Median :2340  
-##                                                                                                   Mean   :5.667   Mean   :2125  
-##                                                                                                   3rd Qu.:6.060   3rd Qu.:2532  
-##                                                                                                   Max.   :6.680   Max.   :2778  
-##       ResY     
-##  Min.   : 640  
-##  1st Qu.: 828  
-##  Median :1080  
-##  Mean   :1035  
-##  3rd Qu.:1170  
-##  Max.   :1284</code></pre>
+<pre><code>##     Model           PixelDensity(ppi)  AspectRatio        TypicalMaxbrightness( cd⁄m2) Contrastratio(typical)
+##  Length:23          Length:23          Length:23          Length:23                    Length:23             
+##  Class :character   Class :character   Class :character   Class :character             Class :character      
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character             Mode  :character      
+##                                                                                                              
+##                                                                                                              
+##                                                                                                              
+##  TrueToneDisplay    ProMotionDisplay   HDR10Content       DolbyVision           Taptic          TypicalMaxbrightness
+##  Length:23          Length:23          Length:23          Length:23          Length:23          Length:23           
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character    
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character    
+##                                                                                                                     
+##                                                                                                                     
+##                                                                                                                     
+##   ScreenSizeIn        ResX           ResY     
+##  Min.   :4.000   Min.   :1136   Min.   : 640  
+##  1st Qu.:5.420   1st Qu.:1792   1st Qu.: 828  
+##  Median :5.850   Median :2340   Median :1080  
+##  Mean   :5.667   Mean   :2125   Mean   :1035  
+##  3rd Qu.:6.060   3rd Qu.:2532   3rd Qu.:1170  
+##  Max.   :6.680   Max.   :2778   Max.   :1284</code></pre>
 <p>iPhone Rear Camera table</p>
 <pre><code>##     Model            iPhone 6S         iPhone 6S Plus     iPhone SE(1st generation)   iPhone 7         iPhone 7 Plus     
 ##  Length:35          Length:35          Length:35          Length:35                 Length:35          Length:35         
 ##  Class :character   Class :character   Class :character   Class :character          Class :character   Class :character  
 ##  Mode  :character   Mode  :character   Mode  :character   Mode  :character          Mode  :character   Mode  :character  
-##    iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS         iPhone XS Max       iPhone XR         iPhone 11 Pro     
-##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##  iPhone 11 Pro Max  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11         iPhone SE(2nd generation) iPhone 12 Mini    
-##  Length:35          Length:35          Length:35          Length:35          Length:35                 Length:35         
-##  Class :character   Class :character   Class :character   Class :character   Class :character          Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character          Mode  :character  
-##   iPhone 12         iPhone 13 Mini      iPhone 13         iPhone 13 Pro      iPhone 13 Pro Max 
-##  Length:35          Length:35          Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
+##    iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS         iPhone XS Max       iPhone XR        
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##  iPhone 11 Pro      iPhone 11 Pro Max  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11         iPhone SE(2nd generation)
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35                
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character         
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character         
+##  iPhone 12 Mini      iPhone 12         iPhone 13 Mini      iPhone 13         iPhone 13 Pro      iPhone 13 Pro Max 
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
 <p>iPhone supported months table</p>
 <pre><code>##     Model           Months supported to date
 ##  Length:33          Length:33               

@@ -40,7 +40,13 @@ According to these two plots, we are able to see that Apple gradually introduced
 library(parcoords)
 library(d3r)
 library(RColorBrewer)
-parcoords(r_display
+
+cleanNA_display <- r_display
+cleanNA_display[is.na(cleanNA_display)] <- "NA"
+colnames(cleanNA_display) <- abbreviate(names(cleanNA_display), minlength=5)
+
+parcoords(cleanNA_display
+          , rownames = F
           , brushMode = "1D-axes"
           , reorderable = T
           , queue = T
@@ -52,23 +58,29 @@ parcoords(r_display
 
 ```
 
-Interactive parallel coordinates plot for display???????????
+We have selected some features from the origianl iPhone Display table.
+Column names explanation??? 
 
 ```{r}
 r_display %>%
-  ggplot(aes(x=fct_inorder(Model), y=ScreenSizeIn)) +
+  ggplot(aes(x=1:nrow(r_display), y=ScreenSizeIn)) +
+  #ggplot(aes(fct_inorder(Model), y=ScreenSizeIn))+
   geom_point() +
-  # geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE) + ????
-  theme(axis.text.x=element_text(angle=60,hjust = 1)) +
+  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+  #scale_x_continuous(Model) +????
+  #theme(axis.text.x=element_text(angle=60,hjust = 1)) +
+  xlab("iPhone Models (in order of release time)") +
   ggtitle("iPhone Screen Size (in) of Different Models")
 ```
+
+Ignore the x-axis values. The x-axis value for each point is each iPhone model in the order of release time. 
+
 
 ```{r}
 r_display %>% 
   ggplot(aes(x=ResX, y=ResY)) +
   geom_point() +
   geom_text(aes(label=Model), hjust=0.5, vjust=-0.5, check_overlap=T) +
-  #???? avoid overlap? less model okay?
   ggtitle("iPhone Resolution of Different Models")
 ```
 
