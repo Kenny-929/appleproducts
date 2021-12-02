@@ -18,7 +18,7 @@ library(vistime)
 
 ## Different iPhone Features Changing
 
-First of all, we will analyze several different features of all models of iPhones.
+In order for us to better understand how products are changing to suit the public’s varying needs, it is necessary to examine the change of products’ features over the year. As an iconic figure among all Apple products, iPhone can be a typical product for our analysis. In this section, we will take deep analysis on the features of different generations of iPhone products, like the release date and discontinued date, display of the phone, and the rear camera mode. In our data cleaning section, we have obtained the data that contain those essential information, and we will utilize these data and a vast of R libraries including tidyverse, rvest, robotstxt, patchwork, naniar, janitor, and vistime to help our exploratory analysis. 
 
 ### Release and Discontinued Date
 According to the cleaned table of released and discontinued data table, we plot this timeline 
