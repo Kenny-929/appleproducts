@@ -38,21 +38,35 @@ if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices"
   display <- full_join(display2,display1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
   display[20, 1] = "Typical Max brightness"
   
-  r_display <- data.frame(t(display))
-  colnames(r_display) <- r_display[1,]
-  r_display <- tail(r_display, -1) 
-  colnames(r_display) <- gsub(" ", "", colnames(r_display))
-  r_display <- add_column(r_display, ScreenSizeIn = parse_number(r_display$ScreenSize))
-  r_display <- add_column(r_display, ResX = parse_number(r_display$Resolution))
-  r_display <- add_column(r_display, ResY = parse_number(str_sub(r_display$Resolution, start=5)))
-  r_display <- tibble::rownames_to_column(r_display, "Model")
-  
   #Rear Camera Info table
   rearcam1 <- iphmodel_inprod[c(58:93),-1]
   rearcam2 <- iphmodel_dispr[c(59:94),-1] %>% select(-c(17,18,19))
   rearcam <- inner_join(rearcam2,rearcam1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
   rearcam <- rearcam[!duplicated(rearcam), ]
 }
+```
+
+```{r}
+# clean display table
+r_display <- data.frame(t(display))
+colnames(r_display) <- r_display[1,]
+r_display <- tail(r_display, -1) 
+r_display <- tibble::rownames_to_column(r_display, "Model")
+colnames(r_display) <- gsub(" ", "", colnames(r_display))
+
+r_display <- add_column(r_display, ScreenSizeIn = parse_number(r_display$ScreenSize))
+r_display <- add_column(r_display, ResX = parse_number(r_display$Resolution))
+r_display <- add_column(r_display, ResY = parse_number(str_sub(r_display$Resolution, start=5)))
+
+r_display <- r_display[-c(2,4,6,12,13,22,24)]
+```
+
+```{r}
+# clean rear camera table
+r_rearcam <- data.frame(t(rearcam))
+colnames(r_rearcam) <- r_rearcam[1,]
+r_rearcam <- tail(r_rearcam, -1)
+r_rearcam <- tibble::rownames_to_column(r_rearcam, "Model")
 ```
 
 ```{r}
@@ -94,15 +108,15 @@ summary(iph_sup)
 
 ## Apple Finance Data
 
-The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. We also change the column names to be more concise.
+The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. Also, the value in year column is not in reasonable format, so we also update that.
 
 ```{r}
 if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
   webdata <- read_html("https://en.wikipedia.org/wiki/Apple_Inc.")
   table <- webdata %>% html_table()
   financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
-  colnames(financeTable) <- abbreviate(names(financeTable), minlength=2)
 }
+financeTable <- financeTable %>% mutate(Year=as.character.Date(substring(.$Year, 0, 4)))
 summary(financeTable)
 ```
 

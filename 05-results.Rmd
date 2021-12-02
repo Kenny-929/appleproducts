@@ -38,6 +38,8 @@ According to these two plots, we are able to see that Apple gradually introduced
 
 ```{r}
 library(parcoords)
+library(d3r)
+library(RColorBrewer)
 parcoords(r_display
           , brushMode = "1D-axes"
           , reorderable = T
@@ -55,8 +57,8 @@ Interactive parallel coordinates plot for display???????????
 ```{r}
 r_display %>%
   ggplot(aes(x=fct_inorder(Model), y=ScreenSizeIn)) +
-  # geom_smooth(formula = y ~ x, method = "lm") + ???????
   geom_point() +
+  # geom_smooth(formula = 'y ~ x', method = "lm", se = FALSE) + ????
   theme(axis.text.x=element_text(angle=60,hjust = 1)) +
   ggtitle("iPhone Screen Size (in) of Different Models")
 ```
@@ -65,20 +67,27 @@ r_display %>%
 r_display %>% 
   ggplot(aes(x=ResX, y=ResY)) +
   geom_point() +
-  geom_text(aes(label=Model), hjust=0, vjust=0) +
-  # check_overlap???? avoid overlap? less model okay?
+  geom_text(aes(label=Model), hjust=0.5, vjust=-0.5, check_overlap=T) +
+  #???? avoid overlap? less model okay?
   ggtitle("iPhone Resolution of Different Models")
 ```
 
+(We checked the overlap models, and only keep one of them.)
 
 
 ### iPhone Rear Camera Table
-
-
-### Supported Date Table ???? 
+For iPhone Rear Camera, we mainly care about some features as the following.
+```{r}
+part_rearcam <- r_rearcam[, c('Model', 'Aperture', 'Night Mode', 'Flash', 'Video Recording', 'Optical Image Stabilization')]
+part_rearcam
+```
 
 
 ## Apple Fianance Data Analysis
+
+```{r}
+#??
+```
 
 
 ## Customer Satisfaction
@@ -87,3 +96,4 @@ Apple and Samsung together dominated the individual brand rankings, and 17 of th
 
 
 ## Smartphones Comparison
+

@@ -13,7 +13,6 @@ different-iphone-features-changing
 release-and-discontinued-date
 iphone-display-table
 iphone-rear-camera-table
-supported-date-table
 apple-fianance-data-analysis
 customer-satisfaction
 smartphones-comparison

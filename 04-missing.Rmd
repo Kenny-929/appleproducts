@@ -110,12 +110,14 @@ plot_missing <- function(dataset, percent = FALSE) {
 
 Missing Values Patterns Plots for Counts
 ```{r}
-plot_missing(financeTable, FALSE)
+finance_short <- financeTable
+colnames(finance_short) <- abbreviate(names(finance_short), minlength=2)
+plot_missing(finance_short, FALSE)
 ```
 
 Missing Values Patterns Plots for Percent
 ```{r}
-plot_missing(financeTable, TRUE)
+plot_missing(finance_short, TRUE)
 ```
 
 ## Reasoning and Intepretation
