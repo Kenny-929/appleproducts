@@ -90,8 +90,18 @@ r_display %>%
 ### iPhone Rear Camera Table
 For iPhone Rear Camera, we mainly care about some features as the following.
 ```{r}
-part_rearcam <- r_rearcam[, c('Model', 'Aperture', 'Night Mode', 'Flash', 'Video Recording', 'Optical Image Stabilization')]
-part_rearcam
+part_rearcam <- r_rearcam[, c('Model', 'Camera', 'Aperture', 'Night Mode', 'Flash', 'Video Recording', 'Optical Image Stabilization')]
+
+parcoords(part_rearcam
+          , rownames = F
+          , brushMode = "1D-axes"
+          , reorderable = T
+          , queue = T
+          , color = list(
+            colorScale = "scaleOrdinal"
+            ,colorScheme = "schemeCategory10"
+          )
+          , withD3 = TRUE)
 ```
 
 
@@ -104,8 +114,28 @@ part_rearcam
 
 ## Customer Satisfaction
 
-Apple and Samsung together dominated the individual brand rankings, and 17 of the 18 models that earned a score of 80 or above came from either Samsung or Apple.
+Apple and Samsung together dominated the individual brand rankings.
 
+```{r}
+cstable %>%
+  ggplot(aes(x=reorder(Model, Satisfaction),y=Satisfaction))+
+  geom_bar(stat = "identity")+
+  xlab("Model") +
+  ylab("Satisfaction Index 0-100 Scale") +
+  ggtitle("Smartphone Customer Satisfaction 2021") +
+  coord_flip()
+```
+
+```{r}
+cstable %>%
+  group_by(Manufacturer) %>%
+  count() %>%
+  ggplot(aes(x=Manufacturer, y=n)) +
+  geom_bar(stat = "identity") +
+  ylab("Number of Model") +
+  ggtitle("Num of Models With Satisfaction >=75") +
+  geom_text(aes(label=n), hjust=0.5, vjust=-0.5)
+```
 
 ## Smartphones Comparison
-
+maybe remove?

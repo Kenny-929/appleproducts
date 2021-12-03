@@ -123,7 +123,7 @@ summary(financeTable)
 
 ## Customer Satisfaction Data
 
-Initially, we want to use the data from [this page](https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/), but the format of the data is picture instead of tables. Then we found [this table](https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones) with the same information, and we extracted the table from here and modified the column names.
+Initially, we want to use the data from [this page](https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/), but the format of the data is picture instead of tables. Then we found [this table](https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones) with the same information, and we extracted the table from here and modified the column names. For the Satisfaction Index column, we change the type to numeric to better analyze it.
 
 ```{r}
 if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones")) {
@@ -133,6 +133,8 @@ if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/b
   colnames(cstable) <- cstable[2,]
   cstable <- tail(cstable, -2)
 }
+names(cstable)[3] <- "Satisfaction"
+cstable <- cstable %>% mutate(Satisfaction=as.numeric(Satisfaction))
 summary(cstable)
 ```
 

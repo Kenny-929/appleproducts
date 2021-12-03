@@ -24,7 +24,7 @@
 <meta name="author" content="Anshuo Wu, Shengdi Chen" />
 
 
-<meta name="date" content="2021-12-02" />
+<meta name="date" content="2021-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -145,7 +145,7 @@ For the display data table, we will focus on the screen size and the resolution 
 ##  Mode  :character   Mode  :character   Mode  :character   Median :2017-09-22   Mode  :character   Median :2019-09-10  
 ##                                                           Mean   :2016-11-25                      Mean   :2018-08-22  
 ##                                                           3rd Qu.:2020-04-24                      3rd Qu.:2021-09-14  
-##                                                           Max.   :2021-09-24                      Max.   :2021-12-02</code></pre>
+##                                                           Max.   :2021-09-24                      Max.   :2021-12-03</code></pre>
 <p>iPhone Display table</p>
 <pre><code>##     Model           PixelDensity(ppi)  AspectRatio        TypicalMaxbrightness( cd⁄m2) Contrastratio(typical)
 ##  Length:23          Length:23          Length:23          Length:23                    Length:23             
@@ -169,22 +169,26 @@ For the display data table, we will focus on the screen size and the resolution 
 ##  3rd Qu.:6.060   3rd Qu.:2532   3rd Qu.:1170  
 ##  Max.   :6.680   Max.   :2778   Max.   :1284</code></pre>
 <p>iPhone Rear Camera table</p>
-<pre><code>##     Model            iPhone 6S         iPhone 6S Plus     iPhone SE(1st generation)   iPhone 7         iPhone 7 Plus     
-##  Length:35          Length:35          Length:35          Length:35                 Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character          Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character          Mode  :character   Mode  :character  
-##    iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS         iPhone XS Max       iPhone XR        
+<pre><code>##     Model            iPhone 6S         iPhone 6S Plus     iPhone SE(1st generation)   iPhone 7        
+##  Length:35          Length:35          Length:35          Length:35                 Length:35         
+##  Class :character   Class :character   Class :character   Class :character          Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character          Mode  :character  
+##  iPhone 7 Plus        iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS         iPhone XS Max     
 ##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
 ##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
 ##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##  iPhone 11 Pro      iPhone 11 Pro Max  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11         iPhone SE(2nd generation)
-##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35                
-##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character         
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character         
-##  iPhone 12 Mini      iPhone 12         iPhone 13 Mini      iPhone 13         iPhone 13 Pro      iPhone 13 Pro Max 
+##   iPhone XR         iPhone 11 Pro      iPhone 11 Pro Max  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11        
 ##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
 ##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##  iPhone SE(2nd generation) iPhone 12 Mini      iPhone 12         iPhone 13 Mini      iPhone 13        
+##  Length:35                 Length:35          Length:35          Length:35          Length:35         
+##  Class :character          Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character          Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##  iPhone 13 Pro      iPhone 13 Pro Max 
+##  Length:35          Length:35         
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character</code></pre>
 <p>iPhone supported months table</p>
 <pre><code>##     Model           Months supported to date
 ##  Length:33          Length:33               
@@ -201,11 +205,14 @@ For the display data table, we will focus on the screen size and the resolution 
 </div>
 <div id="customer-satisfaction-data" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Customer Satisfaction Data</h2>
-<p>Initially, we want to use the data from <a href="https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/">this page</a>, but the format of the data is picture instead of tables. Then we found <a href="https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones">this table</a> with the same information, and we extracted the table from here and modified the column names.</p>
-<pre><code>##     Model           Manufacturer       ACSI (0-100 Scale)
-##  Length:24          Length:24          Length:24         
-##  Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character</code></pre>
+<p>Initially, we want to use the data from <a href="https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/">this page</a>, but the format of the data is picture instead of tables. Then we found <a href="https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones">this table</a> with the same information, and we extracted the table from here and modified the column names. For the Satisfaction Index column, we change the type to numeric to better analyze it.</p>
+<pre><code>##     Model           Manufacturer        Satisfaction  
+##  Length:24          Length:24          Min.   :75.00  
+##  Class :character   Class :character   1st Qu.:79.00  
+##  Mode  :character   Mode  :character   Median :81.00  
+##                                        Mean   :80.83  
+##                                        3rd Qu.:82.00  
+##                                        Max.   :85.00</code></pre>
 </div>
 <div id="comparison-with-samsung-galaxy-s-smartphones" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Comparison with Samsung Galaxy S Smartphones</h2>
