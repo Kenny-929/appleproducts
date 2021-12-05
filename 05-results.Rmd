@@ -112,28 +112,33 @@ parcoords(part_rearcam
 ```{r}
 financeTable %>%
   mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
-  ggplot(aes(x=Year,y=fct_inorder(Employees)))+
+  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) %>%
+  ggplot(aes(x=Year,y=Employees))+
   geom_bar(stat="identity") +
   xlab("Year") +
   ylab("Numbers of Employees") +
+  #scale_y_continuous(breaks = seq(0, 150000,len=1000)) +
   ggtitle("Numbers of Apple Employees from 2000 to 2020 ") +
   theme_bw()
 
 ```
 
 ```{r}
-finance_short <- financeTable
-colnames(finance_short) <- abbreviate(names(finance_short), minlength=2) 
-finance_short %>%
-  ggplot(aes(fct_inorder(RmU),fct_inorder(NimU)))+
+finance_point <- financeTable %>%
+  mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
+  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) 
+colnames(finance_point) <- abbreviate(names(finance_point), minlength=2) 
+finance_point <- finance_point %>%
+  mutate(NimU = ifelse(is.na(NimU), -25, NimU))
+finance_point %>%
+  ggplot(aes(RmU,Em))+
   geom_point() +
   theme(axis.text.x=element_text(angle=60,hjust = 1)) +
   xlab("Revenue in Million") +
-  ylab("Net Income in Million") +
-  ggtitle("Net Income vs Revenue from 2000-2020")
+  ylab("Number of Employees") +
+  ggtitle("Revenue vs. Number of Employees from 2000-2020")
 
 ```
-
 
 ## Customer Satisfaction
 
