@@ -112,7 +112,6 @@ parcoords(part_rearcam
 ```{r}
 financeTable %>%
   mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
-  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) %>%
   ggplot(aes(x=Year,y=Employees))+
   geom_bar(stat="identity") +
   xlab("Year") +
@@ -120,25 +119,19 @@ financeTable %>%
   #scale_y_continuous(breaks = seq(0, 150000,len=1000)) +
   ggtitle("Numbers of Apple Employees from 2000 to 2020 ") +
   theme_bw()
-
 ```
 
 ```{r}
-finance_point <- financeTable %>%
-  mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
-  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) 
-colnames(finance_point) <- abbreviate(names(finance_point), minlength=2) 
-finance_point <- finance_point %>%
-  mutate(NimU = ifelse(is.na(NimU), -25, NimU))
-finance_point %>%
-  ggplot(aes(RmU,Em))+
+financeTable %>%
+  ggplot(aes(Revenueinmil.USD,Employees))+
   geom_point() +
   theme(axis.text.x=element_text(angle=60,hjust = 1)) +
   xlab("Revenue in Million") +
   ylab("Number of Employees") +
-  ggtitle("Revenue vs. Number of Employees from 2000-2020")
-
+  ggtitle("Revenue vs. Number of Employees from 2000-2020")+
+  theme_bw()
 ```
+
 
 ## Customer Satisfaction
 

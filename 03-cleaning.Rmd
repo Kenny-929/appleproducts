@@ -108,7 +108,7 @@ summary(iph_sup)
 
 ## Apple Finance Data
 
-The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. Also, the value in year column is not in reasonable format, so we also update that.
+The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. We change the year column to be in the Date format; for the rest columns, we change the type from character to numeric. We also remove the space in the column names.
 
 ```{r}
 if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
@@ -117,6 +117,12 @@ if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
   financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
 }
 financeTable <- financeTable %>% mutate(Year=as.character.Date(substring(.$Year, 0, 4)))
+financeTable <- financeTable %>%
+  #mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
+  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) 
+colnames(financeTable) <- gsub(" ", "", colnames(financeTable))
+financeTable <- financeTable %>%
+  mutate(Netincomeinmil.USD = ifelse(is.na(Netincomeinmil.USD), -25, Netincomeinmil.USD))
 summary(financeTable)
 ```
 

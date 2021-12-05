@@ -136,50 +136,54 @@
 <h2><span class="header-section-number">4.1</span> Missing Values Patterns Plots</h2>
 <p>For this section, we did the missing value analysis on the <a href="https://en.wikipedia.org/wiki/Apple_Inc.">finance table</a> we found on wikipedia.</p>
 <p>Missing Values Patterns Plots for Counts
-<img src="finalproj_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>Missing Values Patterns Plots for Percent
-<img src="finalproj_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 <div id="reasoning-and-intepretation" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Reasoning and Intepretation</h2>
 <p>We want to discover the reason behind the missing values, so we first print out the missing patterns of the finance table.</p>
-<pre><code>##      Year           Revenuein mil. USD Net incomein mil. USD Total assetsin mil. USD  Employees        
-##  Length:21          Length:21          Length:21             Length:21               Length:21         
-##  Class :character   Class :character   Class :character      Class :character        Class :character  
-##  Mode  :character   Mode  :character   Mode  :character      Mode  :character        Mode  :character</code></pre>
-<pre><code>##     Year Revenuein.mil..USD Net.incomein.mil..USD Total.assetsin.mil..USD Employees
-## 1  FALSE              FALSE                 FALSE                   FALSE      TRUE
-## 2  FALSE              FALSE                 FALSE                   FALSE      TRUE
-## 3  FALSE              FALSE                 FALSE                   FALSE      TRUE
-## 4  FALSE              FALSE                 FALSE                   FALSE      TRUE
-## 5  FALSE              FALSE                 FALSE                   FALSE      TRUE
-## 6  FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 7  FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 8  FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 9  FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 10 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 11 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 12 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 13 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 14 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 15 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 16 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 17 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 18 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 19 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 20 FALSE              FALSE                 FALSE                   FALSE     FALSE
-## 21 FALSE              FALSE                 FALSE                   FALSE     FALSE</code></pre>
+<pre><code>##       Year      Revenueinmil.USD Netincomeinmil.USD Totalassetsinmil.USD   Employees     
+##  Min.   :2000   Min.   :  5363   Min.   :  -25      Min.   :  6021       Min.   : 14800  
+##  1st Qu.:2005   1st Qu.: 13931   1st Qu.: 1328      1st Qu.: 11516       1st Qu.: 33725  
+##  Median :2010   Median : 65225   Median :14013      Median : 75183       Median : 76550  
+##  Mean   :2010   Mean   :111160   Mean   :23818      Mean   :142555       Mean   : 77388  
+##  3rd Qu.:2015   3rd Qu.:215639   3rd Qu.:45687      3rd Qu.:290345       3rd Qu.:117750  
+##  Max.   :2020   Max.   :274515   Max.   :59531      Max.   :375319       Max.   :147000  
+##                                                                          NA&#39;s   :5</code></pre>
+<pre><code>##     Year Revenueinmil.USD Netincomeinmil.USD Totalassetsinmil.USD Employees
+## 1  FALSE            FALSE              FALSE                FALSE      TRUE
+## 2  FALSE            FALSE              FALSE                FALSE      TRUE
+## 3  FALSE            FALSE              FALSE                FALSE      TRUE
+## 4  FALSE            FALSE              FALSE                FALSE      TRUE
+## 5  FALSE            FALSE              FALSE                FALSE      TRUE
+## 6  FALSE            FALSE              FALSE                FALSE     FALSE
+## 7  FALSE            FALSE              FALSE                FALSE     FALSE
+## 8  FALSE            FALSE              FALSE                FALSE     FALSE
+## 9  FALSE            FALSE              FALSE                FALSE     FALSE
+## 10 FALSE            FALSE              FALSE                FALSE     FALSE
+## 11 FALSE            FALSE              FALSE                FALSE     FALSE
+## 12 FALSE            FALSE              FALSE                FALSE     FALSE
+## 13 FALSE            FALSE              FALSE                FALSE     FALSE
+## 14 FALSE            FALSE              FALSE                FALSE     FALSE
+## 15 FALSE            FALSE              FALSE                FALSE     FALSE
+## 16 FALSE            FALSE              FALSE                FALSE     FALSE
+## 17 FALSE            FALSE              FALSE                FALSE     FALSE
+## 18 FALSE            FALSE              FALSE                FALSE     FALSE
+## 19 FALSE            FALSE              FALSE                FALSE     FALSE
+## 20 FALSE            FALSE              FALSE                FALSE     FALSE
+## 21 FALSE            FALSE              FALSE                FALSE     FALSE</code></pre>
 <p>As we can see from the missing pattern table, the missing values of employees occur in the first five rows. Since our year
 column is in chronological order, we know that the five missing rows in Employees column is positively correlated with the year column. Therefore, we want to print out the first five missing rows and the next few employees rows without missing values. By comparing the values of these rows, we may discover the reason behind the missing values in Employees column in the first five years.</p>
 <pre><code>## # A tibble: 6 × 5
-##   Year  `Revenuein mil. USD` `Net incomein mil. USD` `Total assetsin mil. USD` Employees
-##   &lt;chr&gt; &lt;chr&gt;                &lt;chr&gt;                   &lt;chr&gt;                     &lt;chr&gt;    
-## 1 2000  7,983                786                     6,803                     &lt;NA&gt;     
-## 2 2001  5,363                −25                     6,021                     &lt;NA&gt;     
-## 3 2002  5,742                65                      6,298                     &lt;NA&gt;     
-## 4 2003  6,207                69                      6,815                     &lt;NA&gt;     
-## 5 2004  8,279                274                     8,050                     &lt;NA&gt;     
-## 6 2005  13,931               1,328                   11,516                    14,800</code></pre>
+##    Year Revenueinmil.USD Netincomeinmil.USD Totalassetsinmil.USD Employees
+##   &lt;dbl&gt;            &lt;dbl&gt;              &lt;dbl&gt;                &lt;dbl&gt;     &lt;dbl&gt;
+## 1  2000             7983                786                 6803        NA
+## 2  2001             5363                -25                 6021        NA
+## 3  2002             5742                 65                 6298        NA
+## 4  2003             6207                 69                 6815        NA
+## 5  2004             8279                274                 8050        NA
+## 6  2005            13931               1328                11516     14800</code></pre>
 <p>After we apply the <code>plot_missing</code> function on the finance table from Wikipedia, we find that Apple’s finance table only has two missing patterns, and the missing values are all occurred in the employee’s column. Also, by looking at the top plot of the missing graph, we find out that there are five rows of missing values in the finance table. The year of these missing values is from 2000 to 2004, which is very early, so the employee’s data could be missing. This could be one of the main reasons.<br />
 From 2004 to 2005, we can see that the change is more significant compared to the changes in previous years. Thus, we think another possible reason could be that from 2000 - 2004, the number of employees does not matter too much; while from 2004-2005, the company’s rapid development, more information is needed. So since then, the number of employees started to be collected.</p>
 
