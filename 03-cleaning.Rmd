@@ -140,11 +140,8 @@ if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/b
   cstable <- tail(cstable, -2)
 }
 names(cstable)[3] <- "Satisfaction"
-cstable <- cstable %>% mutate(Satisfaction=as.numeric(Satisfaction))
+cstable <- cstable %>% mutate(Satisfaction=as.numeric(as.character(Satisfaction)))
 summary(cstable)
 ```
-
-## Comparison with Samsung Galaxy S Smartphones
-
 
 

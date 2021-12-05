@@ -4,7 +4,6 @@ data-transformation
 iphone-features-data
 apple-finance-data
 customer-satisfaction-data
-comparison-with-samsung-galaxy-s-smartphones
 missing-values
 missing-values-patterns-plots
 reasoning-and-intepretation
@@ -15,6 +14,5 @@ iphone-display-table
 iphone-rear-camera-table
 apple-fianance-data-analysis
 customer-satisfaction
-smartphones-comparison
 interactive-component
 conclusion
