@@ -122,9 +122,9 @@ parcoords(part_rearcam
 
 ```{r}
 library(reshape2)
-financeTry <- melt(financeTable, id.vars = 'Year')
+financeLong <- melt(financeTable[,c(1,2,3,4)], id.vars = 'Year')
 
-financeTry %>%                 
+financeLong %>%                 
   ggplot(aes(Year, value, col=variable)) +
   geom_line() +
   ggtitle("Line Plot for Apple Finance Data 2000 to 2020") +
