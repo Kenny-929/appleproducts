@@ -1,2 +1,9 @@
 # Conclusion
 
+In this project, we collected and analyzed the data of changes of iPhone’s features, Apple’s financial data, and customer satisfaction. We have learned that at the early and middle stages of the development of Apple, they grew very fast and designed generations of outstanding products by making significant improvements. With the fast development of technology and customers' increasing demands, Apple continues to introduce more iPhone models each year and the price of them is also rising. Many people love the brand and have high loyalty, so they are likely to continue to buy the latest products of Apple. While part of the customers think that the newest version of the iPhone does not have too many improvements from the previous ones, and they felt a lot fewer surprises, so they might prefer the earlier version.
+
+
+One limitation of this project is that our dataset from Wikipedia, for example, the iPhone features dataset, was too large and complex. We are not able to fully analyze all the features within a short amount of time. In the future study, we can explore more aspects of the features, as well as collect and analyze the data of Apple’s other products, such as iPad, MacBook, etc. We can also do more comparisons between Apple with other companies.
+
+
+By completing this final project, we have applied the concepts we learned in class and have a deeper understanding of the language R and data visualization and analysis. We got familiar with the whole process starting from collecting data to making plots and doing analysis. Overall, we learned a lot from this class and this project where we had a lot of practice.
