@@ -65,7 +65,7 @@ parcoords(cleanNA_display
 
 ```
 
-This interactive plot shows a wide range of changes in different features of iPhones, and we can select certain features and see which iPhone models have those features. From this plot, we can see that the iPhones produced in later years have more advanced and complete feature settings. For instance, from iPhone 11 to iPhone 13, they all have comparatively high pixel densities and aspect ratios. Some early iPhones like iPhone 6 and iPhone 7 lack a lot of features like ProMotion Display, True Tone Display, etc. Overall, the features in the graph have a positive correlation with each other. For example, iPhones with higher pixel densities also have higher aspect ratios.
+This interactive plot shows a wide range of changes in different features of iPhones, and we can select certain features and see which iPhone models have those features. From this plot, we can see that the iPhones produced in later years have more advanced and complete feature settings. For instance, from iPhone 11 to iPhone 13, they all have comparatively high pixel densities and aspect ratios. Some early iPhones like iPhone 6 and iPhone 7 lack a lot of features like ProMotion Display, True Tone Display, etc. Overall, the features in the graph have a positive correlation with each other. For example, iPhones with higher pixel densities also have higher aspect ratios. (If we have more time, we will modify and correct the order of the models in this plot.)
 
 
 One of the most significant features of iPhone products has to be screen sizes. A larger screen size allows people to view more information at a time and handle more work on the phones. As iPhone starts to be used in more business tasks today, a larger screen size is heavily demanded by the public. In order to visualize this increasing demand, we graphed a scatter plot of screen sizes in different iPhone models. We set the x-axis in integer measures, which follows the order of the date when each model is released. Each point represents each iPhone model in the order of release time. The y axis is the measure of the screen size of each model. To show the trend of the scatter plot, we also included the best fitting lines that capture the trend of the overall change of screen sizes in different models. 
@@ -177,20 +177,28 @@ financeTable %>%
 As we can see from the graph, the scatter plot clearly shows a positive linear relationship between the number of employees and the revenue. It means that as revenue increases, the number of employees also increases. We also find out that the first few points in the graph are more close to each other, but the last few points are spreaded very sparsely. It suggests that the relationship between the two variables is very similar in the previous years, and the changes are very small, but then revenue starts to increase very quickly in the later years, and there exists a larger gap between the two. This conclusion can also be seen in our line graph by comparing the gaps between the lines of employees and revenues. 
 
 ## Customer Satisfaction
+Over the years, Apple continued to make changes to their products to meet or even exceed customer expectations. Their great success is closely related to customers' preferences. To more deeply understand how U.S. customers are satisfied with iPhones, we find a dataset of Smartphone Customer Satisfaction 2021 from ACSI(American Customer Satisfaction Index). This table includes smartphones from different companies. This index is calculated based on various aspects, including ease of text messaging, phone design, audio quality, phone features, video quality, and so forth.
 
-Apple and Samsung together dominated the individual brand rankings.
+Below is a Cleveland Dot Plot of the customer satisfaction score of different brands of phones.
 
 ```{r}
 cstable %>%
   ggplot(aes(x=reorder(Model, Satisfaction),y=Satisfaction))+
-  geom_bar(stat = "identity", fill="lightpink", color = "black")+
+  geom_point()+
+  #geom_bar(stat = "identity", fill="lightpink", color = "black")+
   xlab("Model") +
   ylab("Satisfaction Index 0-100 Scale") +
   ggtitle("Smartphone Customer Satisfaction 2021") +
-  scale_y_continuous(expand = expansion(add=c(-70,5))) +
+  #scale_y_continuous(expand = expansion(add=c(-70,5))) +
   coord_flip() +
   theme_bw()
 ```
+
+In this Cleveland dot plot, we order these smartphone models by satisfaction index, which scales from 0-100. The first five models with highest satisfaction are from Samsung. They all have a satisfaction index from 82.5 to 85. Most iPhone models have a satisfaction index from about 79 to 82. These models are all the latest iPhones with the newest changes in various features. One interesting discovery we found is that the iPhone 11, which was released more recently than iPhone X, has a lower customer satisfaction index than iPhoneX. The reason that iPhone 11 has a lower score may be caused by the fact that iPhone 11 doesn’t show much improvement from the last model, and it might disappoint some customers. Some people might think iPhone 11 does not worth extra money so they stick with iPhone X. Despite this discovery, most people still give iPhone products a high customer satisfaction index, so we can safely conclude that customers are satisfied with the changes that Apple has made to iPhone these years. We can also infer that Samsung is also making changes to their models’ features and meeting more customers’ needs.
+
+After we glanced through the customer satisfaction table, we found that there are only two manufacturers, Apple and Samsung, whose models have a satisfaction index above 75. These two companies dominate the high score ranges of customer satisfaction, thus, we can conclude that they are the two most popular phone companies in the U.S. in 2021. Based on this common view, we want to make a comparison of the number of models each company produces.
+
+We created a bar plot to show this comparison. 
 
 ```{r}
 cstable %>%
@@ -203,3 +211,6 @@ cstable %>%
   geom_text(aes(label=n), hjust=0.5, vjust=-0.5) +
   theme_bw()
 ```
+
+As we can see from the graph, among all 24 models that receive the highest customer satisfaction scores, 13 are from Apple and 11 are from Samsung. Although Apple has two more models than Samsung, the difference is not significant, and we cannot draw a definite conclusion on which company performs better than the other just from this graph. But at least we know that both companies are making an effort on producing more various and advanced phones for their customers. This is also the reason why these two companies can dominate the phone market. 
+
