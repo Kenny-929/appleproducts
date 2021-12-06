@@ -86,6 +86,7 @@ r_display %>%
 
 As we can see from the scatter plot, the minimum size of the iPhone screen is 4 inches, and the maximum size of screen is about 6.7 inches. The best-fitting line is shown in a positive slope. Therefore, we can clearly see that Apple continues to develop larger screen sizes in the last couple of years. There are a few outliers in the graph, like the 17th model released with only about 4.7 inches of screen size, and the 3rd model released with the minimum screen size value 4. This may be caused by the increasing need for different customer groups, for example, some teenagers who prefer smaller screen sizes, and Apple develops the iPhones to satisfy the demand of those customers.
 
+Besides the screen sizes, the dimensions of resolution are also important for the customers. A higher resolution provides a clearer view for iPhone users. In order to illustrate the change of iPhone resolution in different models, we provided a scatter plot of resolution X, meaning the horizontal resolution of visual data in iPhone, and resolution Y, meaning the vertical resolution in iPhone. We labeled the model types on each point in the scatter plot so that the reader can directly associate the resolutions to different iPhone models. We have also checked the overlap between points and only show one of them for better readability.
 
 
 ```{r}
@@ -97,11 +98,15 @@ r_display %>%
   theme_bw()
 ```
 
-(We checked the overlap models, and only keep one of them.)
+From the scatter plot, we can see that the points are arranged in positive scales, which means that newer iPhones generally have higher resolution. The minimum resolution X is about 1100 and the minimum resolution Y is about 750. The minimum resolution happens in the first generation of iPhone, iPhone SE. The maximum resolution X is around 2800, and the maximum resolution Y is around 1300. The maximum resolution occurs in iPhone 12 Pro Max, which was released last year. 
+This result should be predictable, because Apple has gathered newer and more advanced technology as it produces more iPhone products, and a higher resolution or a clearer view is supported in the latest iPhone products for better user experience.
+
 
 
 ### iPhone Rear Camera Table
-For iPhone Rear Camera, we mainly care about some features as the following.
+One of the biggest reasons that many people choose to buy iPhone products has to do with the iPhone's highly competitive and powerful camera. A lot of photography lovers have claimed that the iPhone's camera resembles most of the features that a professional camera has. This kind of high compliment motivates us to discover the features behind the iPhone's camera. We created a parallel coordinate plot to visualize selected important features and their relationship with each other. Similar to the parallel coordinate plot we created for the iPhone display, we only selected a few important features that most people are curious about because the original dataset contains very complex and professional information about camera settings, which will affect the clarity of our visualization. On the left-hand side of the plot, we can see a list of iPhone models, and on the upper side, we can see a list of camera features. We can interact with the axis of each camera feature to compare different pairs of them for our analysis and get information about their relationship. 
+
+
 ```{r}
 part_rearcam <- r_rearcam[, c('Model', 'Camera', 'Aperture', 'Night Mode', 'Flash', 'Video Recording', 'Optical Image Stabilization')]
 
@@ -117,8 +122,13 @@ parcoords(part_rearcam
           , withD3 = TRUE)
 ```
 
+As we can see from the graph, early iPhones like iPhone 6s to iPhone XS, which were produced more than three years ago, all have very basic camera settings. For instance, they don’t have night mode, or optical image stabilization. But iPhones that are produced recently like iPhone 11 to iPhone 13 have more advanced features. For example, these most recent iPhones can produce different kinds of photos in 12 megapixels, which allows consumers to take photos in various ways and in clearer views. There are no clear outliers in the plot. Overall, all the features are shown in positive correlation. For example, iPhones that are 12 megapixels wide and support 12 megapixels of telephotos also support wide and sensor-shift optical image stabilization. (If we have more time, we will modify and correct the order of the models in this plot.) 
+
 
 ## Apple Fianance Data Analysis
+Through our examination of the iPhone products in the previous section, we can notice that Apple has gained a lot of success in producing iPhones in the last decade. Furthermore, according to the note in Wikipedia, on August 2, 2018, Apple became the first publicly traded U.S. company to reach a $1 trillion market value. Also, Apple was ranked No. 4 on the 2018 Fortune 500 rankings of the largest United States corporations by total revenue. Then we started thinking about how much profit that Apple has gained during these years? What does Apple’s financial circumstances exactly look like? In this section, we will focus on the financial circumstances of Apple by looking at a dataset from Wikipedia including Apple’s revenue, net income, total assets and number of employees from 2000 to 2020. 
+
+Below is a line graph showing the three different finance data we have for Apple from 2000 to 2020. 
 
 ```{r}
 library(reshape2)
@@ -132,6 +142,10 @@ financeLong %>%
   theme_bw()
 ```
 
+As we can see from the graph, revenue, net income, and total assets all stay increasing during the years. Since these variables all have the same measuring scale, we can compare their growing trend by looking at the growth rate of the lines. As we can see, total assets is the one that changes most significantly among the three variables. It started growing very smoothly during 2000 to 2010, but then suddenly grew much faster than before in the later years. Different from total assets, the net income stays its smooth growth from 2000 to 2020. Revenue has a similar growth trend as total asset, and it also turns to a faster increasing rate after 2010, but it doesn’t have the same high growth rate as the total asset. 
+
+When we mention the financial circumstances of a company, many people will think of the company’s profit, total assets and revenue, but neglect the importance of the employees in the company. The number of employees can not only inform us of the company’s capabilities of supporting workers, but it can also show us the influence of a company which attracts a vast number of people to work for it. In order to illustrate the trend of employee numbers from 2000 to 2020, we created a bar plot that shows the number of employees in Apple each year. The x axis indicates the year that number of employees is counted, and the y axis represents the number of employees.
+
 ```{r}
 financeTable %>%
   mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
@@ -143,6 +157,10 @@ financeTable %>%
   ggtitle("Numbers of Apple Employees from 2000 to 2020 ") +
   theme_bw()
 ```
+
+From the bar plot, we can see that the number of employees shows a continuous increasing trend. The minimum number of employees is around 15000, and the maximum number of employees is around 150000. Notice that there are five years having 0 Employees, which are 2000 to 2004. For these years, the original dataset doesn’t record any value for the employee numbers, and they are shown as NAs in the table. For our visualization purpose, we changed the NAs values to 0. But what can cause the missing of these values? Possibly, during 2000-2004, Apple only had a handful of employees in their company, and the number of Employees is not very important to them because it doesn’t have a significant influence on Apple’s financial circumstances. Or possibly, Apple doesn’t have a mature system to count all the employees in the early years. Detailed analysis about the missing value on the Employees column has been introduced in the Missing Values chapter. Besides the missing value, another thing we discover from the plot is that the slope of increase from 2005-2015 is larger than the slope of increase from 2015 to 2020. It means that Apple has started to slow down their employment in recent years. Several reasons can cause this change. For example, Apple starts to pay more attention to the quality of employees instead of the quantity, or it may also suggest that the recent financial circumstances no longer allow Apple to employ as many employees as before. 
+
+We now know what the growing number of employees looks like from the previous graph, but it will also be interesting to discover the relationship between the number of employees and the other financial data (revenue, net income and total asset). Since we have found that the three financial data follow a similar growth trend in our line graph, we only need to select one of them to compare with the number of employees because the resulting graph will look very similar if we plot all of them. Below is a scatter plot of the number of employees and the revenue from 2000 to 2020. We place the revenue variable on the x axis, and the number of employees on the y axis. 
 
 ```{r}
 financeTable %>%
@@ -156,6 +174,7 @@ financeTable %>%
   theme_bw()
 ```
 
+As we can see from the graph, the scatter plot clearly shows a positive linear relationship between the number of employees and the revenue. It means that as revenue increases, the number of employees also increases. We also find out that the first few points in the graph are more close to each other, but the last few points are spreaded very sparsely. It suggests that the relationship between the two variables is very similar in the previous years, and the changes are very small, but then revenue starts to increase very quickly in the later years, and there exists a larger gap between the two. This conclusion can also be seen in our line graph by comparing the gaps between the lines of employees and revenues. 
 
 ## Customer Satisfaction
 
