@@ -196,14 +196,14 @@ For the display data table, we will focus on the screen size and the resolution 
 <div id="apple-finance-data" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Apple Finance Data</h2>
 <p>The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word “N/A” with NA in our dataframe. We change the year column to be in the Date format; for the rest columns, we change the type from character to numeric. We also remove the space in the column names.</p>
-<pre><code>##       Year      Revenueinmil.USD Netincomeinmil.USD Totalassetsinmil.USD   Employees     
-##  Min.   :2000   Min.   :  5363   Min.   :  -25      Min.   :  6021       Min.   : 14800  
-##  1st Qu.:2005   1st Qu.: 13931   1st Qu.: 1328      1st Qu.: 11516       1st Qu.: 33725  
-##  Median :2010   Median : 65225   Median :14013      Median : 75183       Median : 76550  
-##  Mean   :2010   Mean   :111160   Mean   :23818      Mean   :142555       Mean   : 77388  
-##  3rd Qu.:2015   3rd Qu.:215639   3rd Qu.:45687      3rd Qu.:290345       3rd Qu.:117750  
-##  Max.   :2020   Max.   :274515   Max.   :59531      Max.   :375319       Max.   :147000  
-##                                                                          NA&#39;s   :5</code></pre>
+<pre><code>##       Year         Revenue         NetIncome      TotalAssets       Employees     
+##  Min.   :2000   Min.   :  5363   Min.   :  -25   Min.   :  6021   Min.   : 14800  
+##  1st Qu.:2005   1st Qu.: 13931   1st Qu.: 1328   1st Qu.: 11516   1st Qu.: 33725  
+##  Median :2010   Median : 65225   Median :14013   Median : 75183   Median : 76550  
+##  Mean   :2010   Mean   :111160   Mean   :23818   Mean   :142555   Mean   : 77388  
+##  3rd Qu.:2015   3rd Qu.:215639   3rd Qu.:45687   3rd Qu.:290345   3rd Qu.:117750  
+##  Max.   :2020   Max.   :274515   Max.   :59531   Max.   :375319   Max.   :147000  
+##                                                                   NA&#39;s   :5</code></pre>
 </div>
 <div id="customer-satisfaction-data" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Customer Satisfaction Data</h2>

@@ -121,8 +121,11 @@ financeTable <- financeTable %>%
   #mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
   mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) 
 colnames(financeTable) <- gsub(" ", "", colnames(financeTable))
+
 financeTable <- financeTable %>%
   mutate(Netincomeinmil.USD = ifelse(is.na(Netincomeinmil.USD), -25, Netincomeinmil.USD))
+
+colnames(financeTable) <- c("Year", "Revenue", "NetIncome", "TotalAssets", "Employees")
 summary(financeTable)
 ```
 

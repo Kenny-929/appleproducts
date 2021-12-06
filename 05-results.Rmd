@@ -121,6 +121,18 @@ parcoords(part_rearcam
 ## Apple Fianance Data Analysis
 
 ```{r}
+library(reshape2)
+financeTry <- melt(financeTable, id.vars = 'Year')
+
+financeTry %>%                 
+  ggplot(aes(Year, value, col=variable)) +
+  geom_line() +
+  ggtitle("Line Plot for Apple Finance Data 2000 to 2020") +
+  ylab("million USD") +
+  theme_bw()
+```
+
+```{r}
 financeTable %>%
   mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
   ggplot(aes(x=Year,y=Employees))+
@@ -135,7 +147,7 @@ financeTable %>%
 ```{r}
 financeTable %>%
   mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
-  ggplot(aes(Revenueinmil.USD,Employees))+
+  ggplot(aes(Revenue,Employees))+
   geom_point() +
   theme(axis.text.x=element_text(angle=60,hjust = 1)) +
   xlab("Revenue in Million") +
