@@ -6,7 +6,7 @@ Author: Anshuo Wu, Shengdi Chen
 
 ## Link to the book URL
 
-kenny-929.github.io/appleproducts/
+https://kenny-929.github.io/appleproducts/
 
 *This repo was initially generated from a bookdown template available here: https://github.com/jtr13/EDAVtemplate.*	
 
