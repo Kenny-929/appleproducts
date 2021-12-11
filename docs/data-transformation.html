@@ -137,78 +137,52 @@
 <p>For release date table, we added another column to store the date information in the correct format.
 For the display data table, we will focus on the screen size and the resolution information. We added extra column for screen size in inch, resolution x and resolution y.</p>
 <p>iPhone Release Date</p>
-<pre><code>##     Model             Released         Discontinued        ReleaseDate        
-##  Length:33          Length:33          Length:33          Min.   :2007-06-29  
-##  Class :character   Class :character   Class :character   1st Qu.:2014-09-19  
-##  Mode  :character   Mode  :character   Mode  :character   Median :2017-09-22  
-##                                                           Mean   :2016-11-25  
-##                                                           3rd Qu.:2020-04-24  
-##                                                           Max.   :2021-09-24  
-##  ReleaseYear          DisconDate        
-##  Length:33          Min.   :2008-07-11  
-##  Class :character   1st Qu.:2016-09-07  
-##  Mode  :character   Median :2019-09-10  
-##                     Mean   :2018-08-24  
-##                     3rd Qu.:2021-09-14  
-##                     Max.   :2021-12-11</code></pre>
+<pre><code>##     Model             Released         Discontinued        ReleaseDate         ReleaseYear          DisconDate        
+##  Length:33          Length:33          Length:33          Min.   :2007-06-29   Length:33          Min.   :2008-07-11  
+##  Class :character   Class :character   Class :character   1st Qu.:2014-09-19   Class :character   1st Qu.:2016-09-07  
+##  Mode  :character   Mode  :character   Mode  :character   Median :2017-09-22   Mode  :character   Median :2019-09-10  
+##                                                           Mean   :2016-11-25                      Mean   :2018-08-24  
+##                                                           3rd Qu.:2020-04-24                      3rd Qu.:2021-09-14  
+##                                                           Max.   :2021-09-24                      Max.   :2021-12-11</code></pre>
 <p>iPhone Display table</p>
-<pre><code>##     Model           PixelDensity(ppi)  AspectRatio       
-##  Length:23          Length:23          Length:23         
-##  Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character  
-##                                                          
-##                                                          
-##                                                          
-##  TypicalMaxbrightness( cd⁄m2) Contrastratio(typical) TrueToneDisplay   
-##  Length:23                    Length:23              Length:23         
-##  Class :character             Class :character       Class :character  
-##  Mode  :character             Mode  :character       Mode  :character  
-##                                                                        
-##                                                                        
-##                                                                        
-##  ProMotionDisplay   HDR10Content       DolbyVision           Taptic         
-##  Length:23          Length:23          Length:23          Length:23         
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##  TypicalMaxbrightness  ScreenSizeIn        ResX           ResY     
-##  Length:23            Min.   :4.000   Min.   :1136   Min.   : 640  
-##  Class :character     1st Qu.:5.420   1st Qu.:1792   1st Qu.: 828  
-##  Mode  :character     Median :5.850   Median :2340   Median :1080  
-##                       Mean   :5.667   Mean   :2125   Mean   :1035  
-##                       3rd Qu.:6.060   3rd Qu.:2532   3rd Qu.:1170  
-##                       Max.   :6.680   Max.   :2778   Max.   :1284</code></pre>
+<pre><code>##     Model           PixelDensity(ppi)  AspectRatio        TypicalMaxbrightness( cd⁄m2) Contrastratio(typical)
+##  Length:23          Length:23          Length:23          Length:23                    Length:23             
+##  Class :character   Class :character   Class :character   Class :character             Class :character      
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character             Mode  :character      
+##                                                                                                              
+##                                                                                                              
+##                                                                                                              
+##  TrueToneDisplay    ProMotionDisplay   HDR10Content       DolbyVision           Taptic          TypicalMaxbrightness
+##  Length:23          Length:23          Length:23          Length:23          Length:23          Length:23           
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character    
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character    
+##                                                                                                                     
+##                                                                                                                     
+##                                                                                                                     
+##   ScreenSizeIn        ResX           ResY     
+##  Min.   :4.000   Min.   :1136   Min.   : 640  
+##  1st Qu.:5.420   1st Qu.:1792   1st Qu.: 828  
+##  Median :5.850   Median :2340   Median :1080  
+##  Mean   :5.667   Mean   :2125   Mean   :1035  
+##  3rd Qu.:6.060   3rd Qu.:2532   3rd Qu.:1170  
+##  Max.   :6.680   Max.   :2778   Max.   :1284</code></pre>
 <p>iPhone Rear Camera table</p>
-<pre><code>##     Model            iPhone 6S         iPhone 6S Plus    
-##  Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character  
-##  iPhone SE(1st generation)   iPhone 7         iPhone 7 Plus     
-##  Length:35                 Length:35          Length:35         
-##  Class :character          Class :character   Class :character  
-##  Mode  :character          Mode  :character   Mode  :character  
-##    iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS        
-##  Length:35          Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##  iPhone XS Max       iPhone XR         iPhone 11 Pro      iPhone 11 Pro Max 
-##  Length:35          Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11        
-##  Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character  
-##  iPhone SE(2nd generation) iPhone 12 Mini      iPhone 12        
-##  Length:35                 Length:35          Length:35         
-##  Class :character          Class :character   Class :character  
-##  Mode  :character          Mode  :character   Mode  :character  
-##  iPhone 13 Mini      iPhone 13         iPhone 13 Pro      iPhone 13 Pro Max 
-##  Length:35          Length:35          Length:35          Length:35         
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
+<pre><code>##     Model            iPhone 6S         iPhone 6S Plus     iPhone SE(1st generation)   iPhone 7         iPhone 7 Plus     
+##  Length:35          Length:35          Length:35          Length:35                 Length:35          Length:35         
+##  Class :character   Class :character   Class :character   Class :character          Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character          Mode  :character   Mode  :character  
+##    iPhone 8         iPhone 8 Plus        iPhone X          iPhone XS         iPhone XS Max       iPhone XR        
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##  iPhone 11 Pro      iPhone 11 Pro Max  iPhone 12 Pro      iPhone 12 Pro Max   iPhone 11         iPhone SE(2nd generation)
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35                
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character         
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character         
+##  iPhone 12 Mini      iPhone 12         iPhone 13 Mini      iPhone 13         iPhone 13 Pro      iPhone 13 Pro Max 
+##  Length:35          Length:35          Length:35          Length:35          Length:35          Length:35         
+##  Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character</code></pre>
 <p>iPhone supported months table</p>
 <pre><code>##     Model           Months supported to date
 ##  Length:33          Length:33               
@@ -218,22 +192,14 @@ For the display data table, we will focus on the screen size and the resolution 
 <div id="apple-finance-data" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Apple Finance Data</h2>
 <p>The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word “N/A” with NA in our dataframe. We change the year column to be in the Date format; for the rest columns, we change the type from character to numeric. We also remove the space in the column names.</p>
-<pre><code>##       Year         Revenue         NetIncome      TotalAssets    
-##  Min.   :2000   Min.   :  5363   Min.   :  -25   Min.   :  6021  
-##  1st Qu.:2005   1st Qu.: 13931   1st Qu.: 1328   1st Qu.: 11516  
-##  Median :2010   Median : 65225   Median :14013   Median : 75183  
-##  Mean   :2010   Mean   :111160   Mean   :23818   Mean   :142555  
-##  3rd Qu.:2015   3rd Qu.:215639   3rd Qu.:45687   3rd Qu.:290345  
-##  Max.   :2020   Max.   :274515   Max.   :59531   Max.   :375319  
-##                                                                  
-##    Employees     
-##  Min.   : 14800  
-##  1st Qu.: 33725  
-##  Median : 76550  
-##  Mean   : 77388  
-##  3rd Qu.:117750  
-##  Max.   :147000  
-##  NA&#39;s   :5</code></pre>
+<pre><code>##       Year         Revenue         NetIncome      TotalAssets       Employees     
+##  Min.   :2000   Min.   :  5363   Min.   :  -25   Min.   :  6021   Min.   : 14800  
+##  1st Qu.:2005   1st Qu.: 13931   1st Qu.: 1328   1st Qu.: 11516   1st Qu.: 33725  
+##  Median :2010   Median : 65225   Median :14013   Median : 75183   Median : 76550  
+##  Mean   :2010   Mean   :111160   Mean   :23818   Mean   :142555   Mean   : 77388  
+##  3rd Qu.:2015   3rd Qu.:215639   3rd Qu.:45687   3rd Qu.:290345   3rd Qu.:117750  
+##  Max.   :2020   Max.   :274515   Max.   :59531   Max.   :375319   Max.   :147000  
+##                                                                   NA&#39;s   :5</code></pre>
 </div>
 <div id="customer-satisfaction-data" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Customer Satisfaction Data</h2>
