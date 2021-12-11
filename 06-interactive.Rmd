@@ -1,3 +1,10 @@
 # Interactive component
 
+We use the iPhone Users data from [this website](https://backlinko.com/iphone-users).
 
+
+<script src="https://d3js.org/d3.v7.js"></script>
+
+<div id="plot"></div>
+
+<script src="interactive.js"></script>
