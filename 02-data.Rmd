@@ -22,3 +22,6 @@ Explanation: This dataset compares different brands of smartphones, including iP
 
 7. Customer Satisfaction Index: https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones 
 Explanation: This dataset shows how customers are satisfied with iPhones and smartphones of other brands. We will analyze how customers reacted to the products’ changes over the years. 
+
+8. Number of iPhone Users from 2008 to 2020: https://backlinko.com/iphone-users
+Explanation: This dataset includes the number of yearly iPhone USers in recent years. We will use this dataset for our interactive visualization part.
