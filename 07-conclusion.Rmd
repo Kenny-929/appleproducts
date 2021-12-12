@@ -2,10 +2,20 @@
 
 In this project, we collected and analyzed the data of changes of iPhone’s features, Apple’s financial data, and customer satisfaction. These findings enrich our understanding of Apple company as a whole. 
 
+## Lessons Learned
+
+
 By analyzing the dataset of iPhone's features throughout their generations, we have learned that Apple grew very fast and designed generations of outstanding products by making significant improvements at the early and middle stages of their development. The vistime graph and the bar graph of numbers of models that Apple releases each year allows us to see the success point of iPhone products in the early years. We noted that Apple continues to introduce more iPhone models each year to satisfy customers' increasing demands. The parallel coordinate graph and the scatter plot of iPhone screen sizes give us an overview of iPhone's different features and their relationships respect to each other in recent models. This tells us that Apple is engaging with a rapid development of technology to suit the needs of the customers. Moving toward the finance table, we found that the overall financial earnings of Apple is rapidly growing. No matter the number of Employees, or Apple's revenue, net income or total assets, all show the expansion of Apple company on the perspectives of finance. The growth in their finance has a lot to do with Apple's customer satisfication. The analysis on customer satisfication allows us to see that many people love the brand and have high loyalty, so they are likely to continue to buy the latest products of Apple. However, we also saw that the trend of increasing customer satisfication is getting slower in recent years. While part of the customers think that the newest version of the iPhone does not have too many improvements from the previous ones, and they felt a lot fewer surprises, so they might prefer the earlier version.
+
+## Limitations
+
 
 One limitation of this project is that our dataset from Wikipedia, for example, the iPhone features dataset, was too large and complex. We are not able to fully analyze all the features within a short amount of time. Also, many information we found is very technical, and not comprehensible for common people, so we have to remove some data from original source to help the understanding of our audience. Furthermore, a lot of big companies like Apple, won't reveal a lot about their true financial data because of its sensitivity and security. There are very few datasets we can find about Apple's detailed cash flow or income statement. This casts some limitation on our analysis. Not only the dataset contains limitations, our plots also contain some limitations. For example, a lot of our modeling only focus on single pair of variable comparison, which applies a lot of bar charts and scatter plot. We are considering apply more multivariate graphs like examing two iPhone products' feature with facet on another Apple feature.  
 
+## Future Direction
+
+
 Despite of these limitations, we can still keep working on our analysis on more perspectives in the future. For instance, we can collect and analyze the data of Apple’s other products, such as iPad, MacBook, etc. Only focusing iPhone products may makes us neglect on Apple's performance on other products. We can also do more comparisons between Apple with other companies. We have been doing comparisons on Apple and Samsung, but these two companies have long history of producing electronic devices. We can compare Apple with some smaller companies that develop more rapidly in recent years. And we may get some insights on what Apple's strength and weakness during this comparison.
+
 
 By completing this final project, we have applied the concepts we learned in class and have a deeper understanding of the language R and data visualization and analysis. We got familiar with the whole process starting from collecting data to making plots and doing analysis. Overall, we learned a lot from this class and this project where we had a lot of practice.

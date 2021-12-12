@@ -16,3 +16,6 @@ apple-fianance-data-analysis
 customer-satisfaction
 interactive-component
 conclusion
+lessons-learned
+limitations
+future-direction
