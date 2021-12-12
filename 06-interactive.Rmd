@@ -1,9 +1,12 @@
 # Interactive component
 
-We use the iPhone Users data from [this website](https://backlinko.com/iphone-users).
-
+In order for us to better understand the change in number of customers, we create an interactive bar graph that shows the number of iPhone Users 2008 to 2020. We found the dataset from [this website](https://backlinko.com/iphone-users). Move mouse on each bar, we can see the differences of the number of users in the selected year with all other years.
 
 <iframe width="780" height="405" src="https://vizhub.com/Kenny-929/cec446f871eb4c2da1e795ca3dea2286?mode=embed" title="Apple Product Interactive" frameborder="0" ></iframe>
 
 
-Here is our explanation
+## Descriptions 
+We want to emphasize the change in number of users in a specific year with respect to the rest of the years, so we add some transitions, text of changes and modify the opacity of bars to indicate such change. In order to interact with the graph, the reader can move the mouse to any of the bars in the graph. Then the reader can find that the text above the bars all changes. The number above the bar that the reader points to is 0, and the rest of the numbers will be the values of changes with respect to the bar that’s pointed to. Furthermore, we adjust the opacity level to emphasize the bar that the reader is pointing to. This also increases the interactivity of the graph. 
+
+## Discovery
+From the graph, we can see that the number of iPhone Users continues to increase from 2008 to 2020. This clearly shows the high satisfaction that the public has toward iPhone products, and it is consistent with our findings in the last part in the Result section. However, from our interactive bar graph, we also notice that the increasing trend in the number of users starts very rapidly in the previous years, but it gets slower around 2017. For example, the number of iPhone users increased 141 million from 2015 to 2016, but it only increased 104 million people from 2016 to 2017, then increased 74 from 2017 to 2018 and 60 from 2018 to 2019. It suggests that iPhone’s customer satisfaction is increasing slower these years. It may be caused by the fact that Apple is finding it hard to satisfy the public’s high expectations, and the competition among smartphone companies is taking away some customer segments of old iPhone users. 

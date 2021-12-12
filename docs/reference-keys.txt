@@ -15,6 +15,8 @@ iphone-rear-camera-table
 apple-fianance-data-analysis
 customer-satisfaction
 interactive-component
+descriptions
+discovery
 conclusion
 lessons-learned
 limitations
