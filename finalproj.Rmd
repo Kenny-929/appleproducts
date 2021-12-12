@@ -1,0 +1,663 @@
+--- 
+title: "Apple Products Analysis"
+author: "Anshuo Wu, Shengdi Chen"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+Apple is one of the biggest technology companies in the world today. They have launched various products such as iPhone, iPad, MacBook, and so forth. They provide so many opportunities for the customers by offering a wide range of products. They have come up with everything a person may want and desire. Apple is also one of the most valued brand all over the world. The way they design the products and the strategies they use to advertise their products contribute to the success of the company. 
+
+Our final project for 5702 EDAV class will employ some data visualization tools to analyze how Apple changes its products, especially iPhones, over generations. Specifically, we will analyze the change in display, screen sizes, camera pixels, etc. Then based on these changes, we will explore Apple’s financial data to discover any relationship between the change of the products with the company’s sales and revenues. In addition, we also want to learn about how customer satisfied with iPhones by comparing the customer satisfaction index of iPhones with other smartphones from other companies. We will also discuss and analyze some missing values in the dataset. We aim to discover more about the vast technology market from those common changes. 
+
+The specific questions we are interested in studying in this project:
+
+1. By comparing different features, like size, camera pixel, and battery life, of Apple products, especially iPhone, and how fast they were changing during these years, can we infer how customers' needs had been changed?
+
+2. How did Apple’s financial data change over the years, and how did the change inform us of the financial circumstances of Apple? How did the sales and revenue change and what could cause those changes?
+
+3. Are customers satisfied with those changes? How did they affect customer satisfaction?
+
+4. Can we see similar changes in other popular smartphones? What can we learn about the technology market from the general changes in all smartphones? 
+
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data sources
+
+Anshuo and Shengdi are both responsible for collecting the data. Our data mainly from Wikipedia. There are many useful and official dataset in Wikipedia.
+
+1. List of iOS and iPadOS devices: https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices
+Explanation: This dataset contains a list of Apple’s devices and compares different features of those products. For instance, it compares power, storage, charging rate, and cameras for each Apple device. It can help us to visualize the difference of features among each generation of devices. By looking at the changes among those devices, we can estimate how fast they change in the past years. 
+
+2. Comparison of Macintosh Models: https://en.wikipedia.org/wiki/Comparison_of_Macintosh_models
+Explanation: This dataset mainly compares Apple’s Macbooks in different generations. It compares features like storage, memory, and processors in a similar manner as the last dataset. By looking at the changes, we can visualize the rate of change among different generations.
+
+3. https://en.wikipedia.org/wiki/IPhone 
+Explanation: This dataset examines different generations of iPhones in more detail. It particularly includes the launch price for each generation of iPhone. This feature helps examine the relationship between the change of the products with the company’s sales and revenues. 
+
+4. Finance Table: https://en.wikipedia.org/wiki/Apple_Inc.
+Explanation: The above Wikipedia page includes the financial data of Apple from 2000 to 2020. It contains the company’s revenue, net income, total assets, and number of employees across the years. This information helps us to understand Apple’s change of financial circumstances within the last ten years.
+
+5. https://en.wikipedia.org/wiki/Timeline_of_Apple_Inc._products
+Explanation: This dataset includes the timeline of the release of each apple product. It shows the products that Apple continues to innovate and the products that Apple has tried to manufacture. This information helps us examine the motivations behind the change of each Apple product. 
+
+6. Comparison of Smartphones: https://en.wikipedia.org/wiki/Comparison_of_smartphones 
+Explanation: This dataset compares different brands of smartphones, including iPhones. It helps us to see the changes in other smartphones, and then relate them to the changes we discover in iPhones. This relationship helps us to answer whether the change of Apple products is unique to itself. If the change can be seen in all smartphones, then we will discover more about the general technology market. 
+
+7. Customer Satisfaction Index: https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones 
+Explanation: This dataset shows how customers are satisfied with iPhones and smartphones of other brands. We will analyze how customers reacted to the products’ changes over the years. 
+
+8. Number of iPhone Users from 2008 to 2020: https://backlinko.com/iphone-users
+Explanation: This dataset includes the number of yearly iPhone USers in recent years. We will use this dataset for our interactive visualization part.
+
+<!--chapter:end:02-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data transformation
+
+```{r, include=FALSE}
+# this prevents package loading message from appearing in the rendered version of your problem set
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      echo = FALSE)
+```
+
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+library(janitor)
+library(lubridate)
+```
+
+We have several different datasets from Wikipedia. We will divide them into four different sections and do the data transformation separately. Later, we will use these cleaned data to plot and answer our questions in the introduction.
+
+## iPhone Features Data
+
+The dataset of Apple products features is very large, and it contains a lot of information in various aspects. We will mainly focus on certain features (including Release date, Display, Rear Camera) of iPhone for all available models. Firstly, we will merge several tables of different models, and then separate them into smaller tables for different features. 
+
+For release date table, we added another column to store the date information in the correct format.
+For the display data table, we will focus on the screen size and the resolution information. We added extra column for screen size in inch, resolution x and resolution y.
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")) {
+  webdata <- read_html("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")
+  table <- webdata %>% html_table()
+  iphmodel_inprod <- table[[4]][-1,] 
+  iphmodel_dispr<- table[[5]][-1,] 
+      
+  #Display Info Table
+  display1 <- iphmodel_inprod[c(3:20),-1] 
+  display2 <- iphmodel_dispr[c(3:21),-1] %>% select(-c(17,18,19))
+  display <- full_join(display2,display1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+  display[20, 1] = "Typical Max brightness"
+  
+  #Rear Camera Info table
+  rearcam1 <- iphmodel_inprod[c(58:93),-1]
+  rearcam2 <- iphmodel_dispr[c(59:94),-1] %>% select(-c(17,18,19))
+  rearcam <- inner_join(rearcam2,rearcam1) %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+  rearcam <- rearcam[!duplicated(rearcam), ]
+}
+```
+
+```{r}
+# clean display table
+r_display <- data.frame(t(display))
+colnames(r_display) <- r_display[1,]
+r_display <- tail(r_display, -1) 
+r_display <- tibble::rownames_to_column(r_display, "Model")
+colnames(r_display) <- gsub(" ", "", colnames(r_display))
+
+r_display <- add_column(r_display, ScreenSizeIn = parse_number(r_display$ScreenSize))
+r_display <- add_column(r_display, ResX = parse_number(r_display$Resolution))
+r_display <- add_column(r_display, ResY = parse_number(str_sub(r_display$Resolution, start=5)))
+
+r_display <- r_display[-c(2,3,4,5,6,10,12,13,14,17,22,23,24)]
+```
+
+```{r}
+# clean rear camera table
+r_rearcam <- data.frame(t(rearcam))
+colnames(r_rearcam) <- r_rearcam[1,]
+r_rearcam <- tail(r_rearcam, -1)
+r_rearcam <- tibble::rownames_to_column(r_rearcam, "Model")
+```
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")) {
+  webdata2 <- read_html("https://en.wikipedia.org/wiki/List_of_iOS_and_iPadOS_devices")
+  table2 <- webdata2 %>% html_table()
+  iphGen <- table2[[3]] %>% select(-9)
+  
+  #release date table
+  iph_rel<-iphGen %>% select(c(2,4,5))
+  iph_rel <- iph_rel %>% add_column(ReleaseDate = as.Date(str_sub(.$Released, -11, -2)))
+  iph_rel <- iph_rel %>% add_column(ReleaseYear = format(.$ReleaseDate, format="%Y"))
+  iph_rel <- iph_rel %>% add_column(DisconDate = if_else(.$Discontinued == "In production", Sys.Date(), as.Date((str_sub(.$Discontinued, -11, -2)))))
+  
+  #supported table
+  iph_sup <- iphGen %>% select (c(2,7))
+}
+```
+
+iPhone Release Date 
+```{r}
+summary(iph_rel)
+```
+
+iPhone Display table
+```{r}
+summary(r_display)
+```
+
+iPhone Rear Camera table
+```{r}
+summary(rearcam)
+```
+
+iPhone supported months table
+```{r}
+summary(iph_sup)
+```
+
+## Apple Finance Data
+
+The finance table includes revenue, net income, total assets, and employees information. However, there are some missing data in the table, so we need to replace the word "N/A" with NA in our dataframe. We change the year column to be in the Date format; for the rest columns, we change the type from character to numeric. We also remove the space in the column names.
+
+```{r}
+if (paths_allowed("https://en.wikipedia.org/wiki/Apple_Inc.")) {
+  webdata <- read_html("https://en.wikipedia.org/wiki/Apple_Inc.")
+  table <- webdata %>% html_table()
+  financeTable <- table[[4]] %>% replace_with_na_if(.predicate = is.character, condition = ~.x %in% ("N/A"))
+}
+financeTable <- financeTable %>% mutate(Year=as.character.Date(substring(.$Year, 0, 4)))
+financeTable <- financeTable %>%
+  #mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
+  mutate_all(function(x) as.numeric(as.character(gsub(",","",x)))) 
+colnames(financeTable) <- gsub(" ", "", colnames(financeTable))
+
+financeTable <- financeTable %>%
+  mutate(Netincomeinmil.USD = ifelse(is.na(Netincomeinmil.USD), -25, Netincomeinmil.USD))
+
+colnames(financeTable) <- c("Year", "Revenue", "NetIncome", "TotalAssets", "Employees")
+summary(financeTable)
+```
+
+
+## Customer Satisfaction Data
+
+Initially, we want to use the data from [this page](https://www.macrumors.com/2020/05/19/apple-smartphone-customer-satisfaction-index/), but the format of the data is picture instead of tables. Then we found [this table](https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones) with the same information, and we extracted the table from here and modified the column names. For the Satisfaction Index column, we change the type to numeric to better analyze it.
+
+```{r}
+if (paths_allowed("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones")) {
+  csdata <- read_html("https://www.theacsi.org/acsi-benchmarks/benchmarks-by-brand/benchmarks-for-smartphones")
+  table <- csdata %>% html_table()
+  cstable <- table[[1]]
+  colnames(cstable) <- cstable[2,]
+  cstable <- tail(cstable, -2)
+}
+names(cstable)[3] <- "Satisfaction"
+cstable <- cstable %>% mutate(Satisfaction=as.numeric(as.character(Satisfaction)))
+summary(cstable)
+```
+
+
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Missing values
+
+```{r, include=FALSE}
+# this prevents package loading message from appearing in the rendered version of your problem set
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      echo = FALSE)
+```
+
+## Missing Values Patterns Plots
+
+For this section, we did the missing value analysis on the [finance table](https://en.wikipedia.org/wiki/Apple_Inc.) we found on wikipedia. 
+
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+```
+
+```{r}
+plot_missing <- function(dataset, percent = FALSE) {
+  # Creating tables for plots
+  missing_patterns <- data.frame(is.na(dataset)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>%
+    ungroup()
+
+  tidydata <- missing_patterns[,1:(ncol(missing_patterns)-1)] %>%
+            rownames_to_column("id") %>%
+            gather(key,value,-id)
+  
+  row_count <- missing_patterns %>%
+               rownames_to_column("id") %>%
+               mutate(row_percent=(count/sum(count)*100))
+  
+  num_rows_miss <- data.frame(colSums(is.na(dataset)))
+  colnames(num_rows_miss) <- c("count")
+  num_rows_miss <- num_rows_miss %>% mutate(row_percent=(count/nrow(dataset)*100)) %>% arrange(desc(count))
+
+  # Find the row index of the complete cases
+  complete_row <- as.character(which(apply(row_count[,2:(ncol(row_count)-2)], 1, function(r) all(r == FALSE))))
+  
+  # Specify the correct order of the variables according to row_count table
+  order_of_variables <- levels(fct_reorder(rownames(num_rows_miss),-num_rows_miss$count))
+  tidydata$key <- tidydata$key %>% factor(levels = order_of_variables)
+
+  tidydata$alp <- as.factor(ifelse(tidydata$id == complete_row, 1, 0.7))
+  
+  # Plot the missing pattern plots ---- Main Plot
+  #mid_name <- rownames(num_rows_miss)[nrow(num_rows_miss)%/%2+1]
+  mid_name<-order_of_variables[length(order_of_variables)/2]
+  p_main <- ggplot(tidydata,aes(x=key,y=fct_rev(fct_inorder(id)),fill=value, alpha=factor(alp))) +
+        geom_tile(color="white") +
+        scale_fill_manual(values = c("grey", "mediumpurple")) +
+        scale_alpha_manual(values= c("1"=1,"0.7"=0.7),guide="none") +
+        theme_bw() +
+        theme(legend.position = "none",
+              panel.grid.major = element_blank(), 
+              panel.grid.minor = element_blank()) +
+        labs(x="Variable",y="Missing Pattern") +
+        annotate(geom="text",x=mid_name,y=complete_row,label="complete cases")
+  
+  # Plot the counts/percentage for missing by patterns ---- Right-hand side Plot
+  row_count$alp <- as.factor(ifelse(row_count$id == complete_row, 1, 0.5))
+  
+  if (percent) {
+    p_right <- ggplot(row_count,aes(x=fct_rev(fct_inorder(id)),y=row_percent,alpha=factor(alp))) +
+          geom_bar(stat = "identity",fill="royalblue") +
+          coord_flip() +
+          ylim(0, 100) +
+          labs(y="% Row")
+  } else {
+    p_right <- ggplot(row_count,aes(x=fct_rev(fct_inorder(id)),y=count,alpha=factor(alp))) +
+          geom_bar(stat = "identity",fill="royalblue") +
+          coord_flip() +
+          labs(y="Row Count")
+  }
+  
+  p_right <- p_right + theme_bw() +
+                theme(axis.title.y=element_blank(),
+                      panel.grid.major.y = element_blank(),
+                      panel.grid.minor.y = element_blank()) +
+                scale_alpha_manual(values= c("1"=1,"0.5"=0.5), guide="none")
+  
+  # Plot the counts/percentage for missing by column ---- topside Plot
+  if (percent) {
+    p_top <- ggplot(num_rows_miss,aes(y=row_percent,x=fct_reorder(rownames(num_rows_miss),-row_percent))) +
+        geom_bar(stat = "identity",fill="royalblue",alpha=0.5) +
+        ylim(0, 100) +
+        labs(y=expression(paste("% rows \n missing:")))
+  } else {
+    p_top <- ggplot(num_rows_miss,aes(y=count,x=fct_reorder(rownames(num_rows_miss),-count))) + 
+        geom_bar(stat = "identity",fill="royalblue",alpha=0.5) +
+        labs(y=expression(paste("num rows \n missing:")))
+  }
+  
+  p_top <- p_top + theme_bw() +
+              theme(axis.title.x=element_blank(),
+                    panel.grid.major.x = element_blank(),
+                    panel.grid.minor.x = element_blank()) +
+              ggtitle("Missing Value Patterns")
+  
+  # Use patchwork to put 3 plots together
+  p_final <- p_top + plot_spacer() + p_main + p_right + plot_layout(widths = c(2, 0.5),heights = c(0.5,2))
+  
+  return(p_final)
+}
+```
+
+Missing Values Patterns Plots for Counts
+```{r}
+finance_short <- financeTable
+#colnames(finance_short) <- abbreviate(names(finance_short), minlength=2)
+plot_missing(finance_short, FALSE)
+```
+
+Missing Values Patterns Plots for Percent
+```{r}
+plot_missing(finance_short, TRUE)
+```
+
+## Reasoning and Intepretation
+
+We want to discover the reason behind the missing values, so we first print out the missing patterns of the finance table.
+```{r}
+summary(financeTable)
+missing_fin <- data.frame(is.na(financeTable))
+missing_fin
+```
+
+As we can see from the missing pattern table, the missing values of employees occur in the first five rows. Since our year
+column is in chronological order, we know that the five missing rows in Employees column is positively correlated with the year column. Therefore, we want to print out the first five missing rows and the next few employees rows without missing values. By comparing the values of these rows, we may discover the reason behind the missing values in Employees column in the first five years.
+```{r}
+financeTable[1:6,]
+```
+
+  After we apply the `plot_missing` function on the finance table from Wikipedia, we find that Apple's finance table only has two missing patterns, and the missing values are all occurred in the employee’s column. Also, by looking at the top plot of the missing graph, we find out that there are five rows of missing values in the finance table. The year of these missing values is from 2000 to 2004, which is very early, so the employee’s data could be missing. This could be one of the main reasons. \
+	From 2004 to 2005, we can see that the change is more significant compared to the changes in previous years. Thus, we think another possible reason could be that from 2000 - 2004, the number of employees does not matter too much; while from 2004-2005, the company’s rapid development, more information is needed. So since then, the number of employees started to be collected.
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Results
+
+```{r, include=FALSE}
+# this prevents package loading message from appearing in the rendered version of your problem set
+knitr::opts_chunk$set(warning = FALSE, message = FALSE,
+                      echo = FALSE)
+```
+
+```{r}
+library(rvest)
+library(robotstxt)
+library(tidyverse) 
+library(patchwork)
+library(naniar)
+library(janitor)
+library(vistime)
+```
+
+## Different iPhone Features Changing
+
+In order for us to better understand how products are changing to suit the public’s varying needs, it is necessary to examine the change of products’ features over the year. As an iconic figure among all Apple products, iPhone can be a typical product for our analysis. In this section, we will take a deep analysis of the features of different generations of iPhone products, like the release date and discontinued date, display of the phone, and the rear camera mode. In our data cleaning section, we have obtained the data that contain that essential information, and we will utilize these data and a vast of R libraries including tidyverse, rvest, robotstxt, patchwork, naniar, janitor, and vistime to help our exploratory analysis.
+
+### Release and Discontinued Date
+Before we dive into the various features of the iPhone, we want to present a roadmap of when each iPhone was produced and when it was discontinued from production. For our purpose, we utilize the vistime library to draw the visualization. 
+```{r}
+vistime(iph_rel, col.event="Model", col.start = "ReleaseDate", col.end = "DisconDate", optimize_y = TRUE)
+```
+
+Vistime allows us to interact with the graph. If we point at the box where each iPhone is located, we can clearly see when the iPhone is produced and when it’s discontinued. As we can see from the graph, the earliest iPhone was produced in 2008, and it only lasts for one year. A similar fate can be seen on iPhone 3G or iPhone 5, where we can imply that Apple was facing certain challenges as they first started producing the iPhone product. As Apple continues on producing the iPhone products, we can see their production lasts longer than before, which may be caused by their more stabilized or newer technology. However, there is one thing we notice from the graph about the iPhone 4. Although it’s among one of the earliest iPhones, its production lasts comparatively longer than other early iPhones. This tells us that iPhone 4 symbolizes one of the early successes in Apply history. Also, starting from iPhone 4, Apple started producing iPhones more frequently and introducing more models.
+
+
+```{r}
+ggplot(iph_rel, aes(x=ReleaseYear)) +
+  geom_bar(fill="lightpink", color = "black") +
+  ggtitle("Number of iPhone Models Released in Each Year") +
+  geom_text(aes(label=..count..), stat = 'count',hjust=0.5, vjust=-0.5) +
+  theme_bw(13)
+```
+
+As we can see from the bar graph of numbers of the iPhones released each year, we can see that Apple continues to release more and more iPhone models in the last 15 years. Apple reaches at most 5 models in 2020. In particular, the year 2013 can be seen as a growth point of iPhone models. Before 2013, Apple only released one model a year, but after 2013, Apple started releasing more than 2 models a year. This implies that Apple reached success in making iPhone models in 2013, and they were more confident to produce more various models in the following years. This result is consistent with what we get from the Vistime plot. As we said, iPhone 4 can be seen as one of the early successes in Apple history. And if we look back at the production period of the iPhone 4, which is 2010-2013, we can see that the success of the iPhone 4 perfectly matches the growth point of the iPhone models. 
+
+### iPhone Display Table
+We found a dataset about the information of the display of each iPhone model. Given the dataset, we use a parallel coordinate plot to visualize the relationship among different iPhone features. Since the original dataset contains fairly detailed information about different features of iPhone models, for the sake of simplicity and clarity, we only selected a few important features that the most public care about when they select iPhones, including pixel density, aspect ratio, typical max brightness, contrast ratio, etc. To avoid the overlap of the feature names in the plot, we have abbreviated the feature names. 
+In order for readers to have a clear sense of what the abbreviate names represent, we have included a table to compare
+the original names and abbreviated names.
+```{r}
+data.frame(feature_name=names(r_display),abbreviate_feature_name=names(cleanNA_display))
+```
+
+
+```{r}
+library(parcoords)
+library(d3r)
+library(RColorBrewer)
+
+cleanNA_display <- r_display
+cleanNA_display[is.na(cleanNA_display)] <- "NA"
+colnames(cleanNA_display) <- abbreviate(names(cleanNA_display), minlength=5)
+
+parcoords(cleanNA_display
+          , rownames = F
+          , brushMode = "1D-axes"
+          , reorderable = T
+          , queue = T
+          , color = list(
+            colorScale = "scaleOrdinal"
+            ,colorScheme = "schemeCategory10"
+          )
+          , withD3 = TRUE)
+
+```
+
+This interactive plot shows a wide range of changes in different features of iPhones, and we can select certain features and see which iPhone models have those features. From this plot, we can see that the iPhones produced in later years have more advanced and complete feature settings. For instance, from iPhone 11 to iPhone 13, they all have comparatively high pixel densities and aspect ratios. Some early iPhones like iPhone 6 and iPhone 7 lack a lot of features like ProMotion Display, True Tone Display, etc. Overall, the features in the graph have a positive correlation with each other. For example, iPhones with higher pixel densities also have higher aspect ratios. (If we have more time, we will modify and correct the order of the models in this plot.)
+
+
+One of the most significant features of iPhone products has to be screen sizes. A larger screen size allows people to view more information at a time and handle more work on the phones. As iPhone starts to be used in more business tasks today, a larger screen size is heavily demanded by the public. In order to visualize this increasing demand, we graphed a scatter plot of screen sizes in different iPhone models. We set the x-axis in integer measures, which follows the order of the date when each model is released. Each point represents each iPhone model in the order of release time. The y axis is the measure of the screen size of each model. To show the trend of the scatter plot, we also included the best fitting lines that capture the trend of the overall change of screen sizes in different models. 
+
+
+```{r}
+r_display %>%
+  ggplot(aes(x=1:nrow(r_display), y=ScreenSizeIn)) +
+  #ggplot(aes(fct_inorder(Model), y=ScreenSizeIn))+
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "lm", se = FALSE) +
+  #scale_x_continuous(Model) +???? we tried to modify the x axis to be the model names
+  #theme(axis.text.x=element_text(angle=60,hjust = 1)) +
+  xlab("iPhone Models (in order of release time)") +
+  ggtitle("iPhone Screen Size (in) of Different Models") +
+  theme_bw(13)
+```
+
+As we can see from the scatter plot, the minimum size of the iPhone screen is 4 inches, and the maximum size of screen is about 6.7 inches. The best-fitting line is shown in a positive slope. Therefore, we can clearly see that Apple continues to develop larger screen sizes in the last couple of years. There are a few outliers in the graph, like the 17th model released with only about 4.7 inches of screen size, and the 3rd model released with the minimum screen size value 4. This may be caused by the increasing need for different customer groups, for example, some teenagers who prefer smaller screen sizes, and Apple develops the iPhones to satisfy the demand of those customers.
+
+Besides the screen sizes, the dimensions of resolution are also important for the customers. A higher resolution provides a clearer view for iPhone users. In order to illustrate the change of iPhone resolution in different models, we provided a scatter plot of resolution X, meaning the horizontal resolution of visual data in iPhone, and resolution Y, meaning the vertical resolution in iPhone. We labeled the model types on each point in the scatter plot so that the reader can directly associate the resolutions to different iPhone models. We have also checked the overlap between points and only show one of them for better readability.
+
+
+```{r}
+r_display %>% 
+  ggplot(aes(x=ResX, y=ResY)) +
+  geom_point() +
+  geom_text(aes(label=Model), hjust=0.5, vjust=-0.5, check_overlap=T) +
+  ggtitle("iPhone Resolution of Different Models") +
+  theme_bw(13)
+```
+
+From the scatter plot, we can see that the points are arranged in positive scales, which means that newer iPhones generally have higher resolution. The minimum resolution X is about 1100 and the minimum resolution Y is about 750. The minimum resolution happens in the first generation of iPhone, iPhone SE. The maximum resolution X is around 2800, and the maximum resolution Y is around 1300. The maximum resolution occurs in iPhone 12 Pro Max, which was released last year. 
+This result should be predictable, because Apple has gathered newer and more advanced technology as it produces more iPhone products, and a higher resolution or a clearer view is supported in the latest iPhone products for better user experience.
+
+
+
+### iPhone Rear Camera Table
+One of the biggest reasons that many people choose to buy iPhone products has to do with the iPhone's highly competitive and powerful camera. A lot of photography lovers have claimed that the iPhone's camera resembles most of the features that a professional camera has. This kind of high compliment motivates us to discover the features behind the iPhone's camera. We created a parallel coordinate plot to visualize selected important features and their relationship with each other. Similar to the parallel coordinate plot we created for the iPhone display, we only selected a few important features that most people are curious about because the original dataset contains very complex and professional information about camera settings, which will affect the clarity of our visualization. On the left-hand side of the plot, we can see a list of iPhone models, and on the upper side, we can see a list of camera features. We can interact with the axis of each camera feature to compare different pairs of them for our analysis and get information about their relationship. 
+
+
+```{r}
+part_rearcam <- r_rearcam[, c('Model', 'Camera', 'Aperture', 'Night Mode', 'Flash', 'Video Recording', 'Optical Image Stabilization')]
+
+parcoords(part_rearcam
+          , rownames = F
+          , brushMode = "1D-axes"
+          , reorderable = T
+          , queue = T
+          , color = list(
+            colorScale = "scaleOrdinal"
+            ,colorScheme = "schemeCategory10"
+          )
+          , withD3 = TRUE)
+```
+
+As we can see from the graph, early iPhones like iPhone 6s to iPhone XS, which were produced more than three years ago, all have very basic camera settings. For instance, they don’t have night mode, or optical image stabilization. But iPhones that are produced recently like iPhone 11 to iPhone 13 have more advanced features. For example, these most recent iPhones can produce different kinds of photos in 12 megapixels, which allows consumers to take photos in various ways and in clearer views. There are no clear outliers in the plot. Overall, all the features are shown in positive correlation. For example, iPhones that are 12 megapixels wide and support 12 megapixels of telephotos also support wide and sensor-shift optical image stabilization. (If we have more time, we will modify and correct the order of the models in this plot.) 
+
+
+## Apple Fianance Data Analysis
+Through our examination of the iPhone products in the previous section, we can notice that Apple has gained a lot of success in producing iPhones in the last decade. Furthermore, according to the note in Wikipedia, on August 2, 2018, Apple became the first publicly traded U.S. company to reach a $1 trillion market value. Also, Apple was ranked No. 4 on the 2018 Fortune 500 rankings of the largest United States corporations by total revenue. Then we started thinking about how much profit that Apple has gained during these years? What does Apple’s financial circumstances exactly look like? In this section, we will focus on the financial circumstances of Apple by looking at a dataset from Wikipedia including Apple’s revenue, net income, total assets and number of employees from 2000 to 2020. 
+
+Below is a line graph showing the three different finance data we have for Apple from 2000 to 2020. 
+
+```{r}
+library(reshape2)
+financeLong <- melt(financeTable[,c(1,2,3,4)], id.vars = 'Year')
+
+options(scipen=10000)
+financeLong %>%                 
+  ggplot(aes(Year, value, col=variable)) +
+  geom_line() +
+  ggtitle("Line Plot for Apple Finance Data 2000 to 2020") +
+  ylab("million USD") +
+  theme_bw(13)
+```
+
+As we can see from the graph, revenue, net income, and total assets all stay increasing during the years. Since these variables all have the same measuring scale, we can compare their growing trend by looking at the growth rate of the lines. As we can see, total assets is the one that changes most significantly among the three variables. It started growing very smoothly during 2000 to 2010, but then suddenly grew much faster than before in the later years. Different from total assets, the net income stays its smooth growth from 2000 to 2020. Revenue has a similar growth trend as total asset, and it also turns to a faster increasing rate after 2010, but it doesn’t have the same high growth rate as the total asset. 
+
+When we mention the financial circumstances of a company, many people will think of the company’s profit, total assets and revenue, but neglect the importance of the employees in the company. The number of employees can not only inform us of the company’s capabilities of supporting workers, but it can also show us the influence of a company which attracts a vast number of people to work for it. In order to illustrate the trend of employee numbers from 2000 to 2020, we created a bar plot that shows the number of employees in Apple each year. The x axis indicates the year that number of employees is counted, and the y axis represents the number of employees.
+
+```{r}
+financeTable %>%
+  mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
+  ggplot(aes(x=Year,y=Employees))+
+  geom_bar(stat="identity", fill="lightpink", color = "black") +
+  xlab("Year") +
+  ylab("Numbers of Employees") +
+  #scale_y_continuous(breaks = seq(0, 150000,len=1000)) +
+  ggtitle("Numbers of Apple Employees from 2000 to 2020 ") +
+  geom_text(size=2.5, aes(label=Employees), hjust=0.5, vjust=-0.5) +
+  theme_bw(13)
+```
+
+From the bar plot, we can see that the number of employees shows a continuous increasing trend. The minimum number of employees is around 15000, and the maximum number of employees is around 150000. Notice that there are five years having 0 Employees, which are 2000 to 2004. For these years, the original dataset doesn’t record any value for the employee numbers, and they are shown as NAs in the table. For our visualization purpose, we changed the NAs values to 0. But what can cause the missing of these values? Possibly, during 2000-2004, Apple only had a handful of employees in their company, and the number of Employees is not very important to them because it doesn’t have a significant influence on Apple’s financial circumstances. Or possibly, Apple doesn’t have a mature system to count all the employees in the early years. Detailed analysis about the missing value on the Employees column has been introduced in the Missing Values chapter. Besides the missing value, another thing we discover from the plot is that the slope of increase from 2005-2015 is larger than the slope of increase from 2015 to 2020. It means that Apple has started to slow down their employment in recent years. Several reasons can cause this change. For example, Apple starts to pay more attention to the quality of employees instead of the quantity, or it may also suggest that the recent financial circumstances no longer allow Apple to employ as many employees as before. 
+
+We now know what the growing number of employees looks like from the previous graph, but it will also be interesting to discover the relationship between the number of employees and the other financial data (revenue, net income and total asset). Since we have found that the three financial data follow a similar growth trend in our line graph, we only need to select one of them to compare with the number of employees because the resulting graph will look very similar if we plot all of them. Below is a scatter plot of the number of employees and the revenue from 2000 to 2020. We place the revenue variable on the x axis, and the number of employees on the y axis. 
+
+```{r}
+financeTable %>%
+  mutate(Employees = ifelse(is.na(Employees), 0, Employees)) %>%
+  ggplot(aes(Revenue,Employees))+
+  geom_point() +
+  theme(axis.text.x=element_text(angle=60,hjust = 1)) +
+  xlab("Revenue in Million") +
+  ylab("Number of Employees") +
+  ggtitle("Revenue vs. Number of Employees from 2000-2020")+
+  theme_bw(13)
+```
+
+As we can see from the graph, the scatter plot clearly shows a positive linear relationship between the number of employees and the revenue. It means that as revenue increases, the number of employees also increases. We also find out that the first few points in the graph are more close to each other, but the last few points are spreaded very sparsely. It suggests that the relationship between the two variables is very similar in the previous years, and the changes are very small, but then revenue starts to increase very quickly in the later years, and there exists a larger gap between the two. This conclusion can also be seen in our line graph by comparing the gaps between the lines of employees and revenues. 
+
+## Customer Satisfaction
+Over the years, Apple continued to make changes to their products to meet or even exceed customer expectations. Their great success is closely related to customers' preferences. To more deeply understand how U.S. customers are satisfied with iPhones, we find a dataset of Smartphone Customer Satisfaction 2021 from ACSI(American Customer Satisfaction Index). This table includes smartphones from different companies. This index is calculated based on various aspects, including ease of text messaging, phone design, audio quality, phone features, video quality, and so forth.
+
+Below is a Cleveland Dot Plot of the customer satisfaction score of different brands of phones.
+
+```{r}
+cstable %>%
+  ggplot(aes(x=reorder(Model, Satisfaction),y=Satisfaction))+
+  geom_point()+
+  #geom_bar(stat = "identity", fill="lightpink", color = "black")+
+  xlab("Model") +
+  ylab("Satisfaction Index 0-100 Scale") +
+  ggtitle("Smartphone Customer Satisfaction 2021") +
+  #scale_y_continuous(expand = expansion(add=c(-70,5))) +
+  coord_flip() +
+  theme_bw(12)
+```
+
+In this Cleveland dot plot, we order these smartphone models by satisfaction index, which scales from 0-100. The first five models with highest satisfaction are from Samsung. They all have a satisfaction index from 82.5 to 85. Most iPhone models have a satisfaction index from about 79 to 82. These models are all the latest iPhones with the newest changes in various features. One interesting discovery we found is that the iPhone 11, which was released more recently than iPhone X, has a lower customer satisfaction index than iPhoneX. The reason that iPhone 11 has a lower score may be caused by the fact that iPhone 11 doesn’t show much improvement from the last model, and it might disappoint some customers. Some people might think iPhone 11 does not worth extra money so they stick with iPhone X. Despite this discovery, most people still give iPhone products a high customer satisfaction index, so we can safely conclude that customers are satisfied with the changes that Apple has made to iPhone these years. We can also infer that Samsung is also making changes to their models’ features and meeting more customers’ needs.
+
+After we glanced through the customer satisfaction table, we found that there are only two manufacturers, Apple and Samsung, whose models have a satisfaction index above 75. These two companies dominate the high score ranges of customer satisfaction, thus, we can conclude that they are the two most popular phone companies in the U.S. in 2021. Based on this common view, we want to make a comparison of the number of models each company produces.
+
+We created a bar plot to show this comparison. 
+
+```{r}
+cstable %>%
+  group_by(Manufacturer) %>%
+  count() %>%
+  ggplot(aes(x=Manufacturer, y=n)) +
+  geom_bar(stat = "identity", fill="lightpink", color = "black") +
+  ylab("Number of Model") +
+  ggtitle("Num of Models With Satisfaction >=75") +
+  geom_text(aes(label=n), hjust=0.5, vjust=-0.5) +
+  theme_bw(13)
+```
+
+As we can see from the graph, among all 24 models that receive the highest customer satisfaction scores, 13 are from Apple and 11 are from Samsung. Although Apple has two more models than Samsung, the difference is not significant, and we cannot draw a definite conclusion on which company performs better than the other just from this graph. But at least we know that both companies are making an effort on producing more various and advanced phones for their customers. This is also the reason why these two companies can dominate the phone market. 
+
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+In order for us to better understand the change in number of customers, we create an interactive bar graph that shows the number of iPhone Users 2008 to 2020. We found the dataset from [this website](https://backlinko.com/iphone-users). Move mouse on each bar, we can see the differences of the number of users in the selected year with all other years. (To view the specific code, click on the "VizHub" button at bottom right and then Open Editor.)
+
+
+<iframe width="780" height="405" src="https://vizhub.com/Kenny-929/cec446f871eb4c2da1e795ca3dea2286?mode=embed" title="Apple Product Interactive" frameborder="0" ></iframe>
+
+
+## Descriptions 
+We want to emphasize the change in number of users in a specific year with respect to the rest of the years, so we add some transitions, text of changes and modify the opacity of bars to indicate such change. In order to interact with the graph, the reader can move the mouse to any of the bars in the graph. Then the reader can find that the text above the bars all changes. The number above the bar that the reader points to is 0, and the rest of the numbers will be the values of changes with respect to the bar that’s pointed to. Furthermore, we adjust the opacity level to emphasize the bar that the reader is pointing to. This also increases the interactivity of the graph. 
+
+## Discovery
+From the graph, we can see that the number of iPhone Users continues to increase from 2008 to 2020. This clearly shows the high satisfaction that the public has toward iPhone products, and it is consistent with our findings in the last part in the Result section. However, from our interactive bar graph, we also notice that the increasing trend in the number of users starts very rapidly in the previous years, but it gets slower around 2017. For example, the number of iPhone users increased 141 million from 2015 to 2016, but it only increased 104 million people from 2016 to 2017, then increased 74 from 2017 to 2018 and 60 from 2018 to 2019. It suggests that iPhone’s customer satisfaction is increasing slower these years. It may be caused by the fact that Apple is finding it hard to satisfy the public’s high expectations, and the competition among smartphone companies is taking away some customer segments of old iPhone users. 
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+In this project, we collected and analyzed the data of changes of iPhone’s features, Apple’s financial data, and customer satisfaction. These findings enrich our understanding of the development of iPhones and Apple company as a whole. 
+
+## Lessons Learned
+
+By analyzing the dataset of iPhone's features throughout their generations, we have learned that Apple grew very fast and designed generations of outstanding products by making significant improvements at the early and middle stages of their development. The vistime graph and the bar graph of numbers of models that Apple releases each year allows us to see the success point of iPhone products in the early years. We noted that Apple continues to introduce more iPhone models each year to satisfy customers' increasing demands. The iPhones’ features plots tell us that Apple is engaging with the rapid development of technology to suit the needs of the customers. Moving toward the finance table, we found that the overall financial earnings of Apple are rapidly growing. No matter the number of Employees, or Apple's revenue, net income, or total assets, all show the expansion of Apple company. The growth in their finance has a lot to do with Apple's customer satisfaction. The analysis on customer satisfaction allows us to see that many people love the brand and have high loyalty, so they are likely to continue to buy the latest products of Apple. However, we also saw that the trend of increasing customer satisfaction is getting slower in recent years. While part of the customers think that the newest version of the iPhone does not have too many improvements from the previous ones, and they felt a lot fewer surprises, so they might prefer the earlier versions.
+
+## Limitations
+
+One limitation of this project is that our dataset from Wikipedia, for example, the iPhone features dataset, was too large and complex. We are not able to fully analyze all the features within a short amount of time. Also, most information we found is very technical, and not comprehensible for common people, so we have to remove some data from original sources to help the understanding of our audience. Furthermore, a lot of big companies like Apple, won't reveal a lot about their latest financial data because of its sensitivity and security. There are very few datasets we can find about Apple's detailed cash flow or income statement. This casts some limitations on our analysis. Not only the dataset contains limitations, but our plots also contain some limitations. For example, a lot of our modeling only focus on single pair of variable comparison, which applies a lot of bar charts and scatter plot. We are considering applying more multivariate graphs like examing two iPhone products' features with the facet on another Apple feature.
+
+## Future Direction
+
+In the future, we can still keep working on our analysis from more perspectives. For instance, we can collect and analyze the data of Apple’s other products, such as iPad, MacBook, etc. Only focusing on iPhone products may make us neglect Apple's performance on other products. We can also do more comparisons between Apple with other companies. We have been doing comparisons on Apple and Samsung, but these two companies have a long history of producing electronic devices. We can compare Apple with some newer companies that develop more rapidly in recent years. We may be able to get some insights into Apple's strengths and weaknesses during this comparison.
+
+
+By completing this final project, we have applied the concepts we learned in class and have a deeper understanding of the language R and data visualization and analysis. We got familiar with the whole process starting from collecting data to making plots and doing analysis. Overall, we learned a lot from this class and this project where we had a lot of practice.
+
+<!--chapter:end:07-conclusion.Rmd-->
+
