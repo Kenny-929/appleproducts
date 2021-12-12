@@ -41,6 +41,11 @@ As we can see from the bar graph of numbers of the iPhones released each year, w
 
 ### iPhone Display Table
 We found a dataset about the information of the display of each iPhone model. Given the dataset, we use a parallel coordinate plot to visualize the relationship among different iPhone features. Since the original dataset contains fairly detailed information about different features of iPhone models, for the sake of simplicity and clarity, we only selected a few important features that the most public care about when they select iPhones, including pixel density, aspect ratio, typical max brightness, contrast ratio, etc. To avoid the overlap of the feature names in the plot, we have abbreviated the feature names. 
+In order for readers to have a clear sense of what the abbreviate names represent, we have included a table to compare
+the original names and abbreviated names.
+```{r}
+data.frame(feature_name=names(r_display),abbreviate_feature_name=names(cleanNA_display))
+```
 
 
 ```{r}
