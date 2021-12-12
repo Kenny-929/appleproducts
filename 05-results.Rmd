@@ -34,7 +34,7 @@ ggplot(iph_rel, aes(x=ReleaseYear)) +
   geom_bar(fill="lightpink", color = "black") +
   ggtitle("Number of iPhone Models Released in Each Year") +
   geom_text(aes(label=..count..), stat = 'count',hjust=0.5, vjust=-0.5) +
-  theme_bw()
+  theme_bw(13)
 ```
 
 As we can see from the bar graph of numbers of the iPhones released each year, we can see that Apple continues to release more and more iPhone models in the last 15 years. Apple reaches at most 5 models in 2020. In particular, the year 2013 can be seen as a growth point of iPhone models. Before 2013, Apple only released one model a year, but after 2013, Apple started releasing more than 2 models a year. This implies that Apple reached success in making iPhone models in 2013, and they were more confident to produce more various models in the following years. This result is consistent with what we get from the Vistime plot. As we said, iPhone 4 can be seen as one of the early successes in Apple history. And if we look back at the production period of the iPhone 4, which is 2010-2013, we can see that the success of the iPhone 4 perfectly matches the growth point of the iPhone models. 
@@ -81,7 +81,7 @@ r_display %>%
   #theme(axis.text.x=element_text(angle=60,hjust = 1)) +
   xlab("iPhone Models (in order of release time)") +
   ggtitle("iPhone Screen Size (in) of Different Models") +
-  theme_bw()
+  theme_bw(13)
 ```
 
 As we can see from the scatter plot, the minimum size of the iPhone screen is 4 inches, and the maximum size of screen is about 6.7 inches. The best-fitting line is shown in a positive slope. Therefore, we can clearly see that Apple continues to develop larger screen sizes in the last couple of years. There are a few outliers in the graph, like the 17th model released with only about 4.7 inches of screen size, and the 3rd model released with the minimum screen size value 4. This may be caused by the increasing need for different customer groups, for example, some teenagers who prefer smaller screen sizes, and Apple develops the iPhones to satisfy the demand of those customers.
@@ -95,7 +95,7 @@ r_display %>%
   geom_point() +
   geom_text(aes(label=Model), hjust=0.5, vjust=-0.5, check_overlap=T) +
   ggtitle("iPhone Resolution of Different Models") +
-  theme_bw()
+  theme_bw(13)
 ```
 
 From the scatter plot, we can see that the points are arranged in positive scales, which means that newer iPhones generally have higher resolution. The minimum resolution X is about 1100 and the minimum resolution Y is about 750. The minimum resolution happens in the first generation of iPhone, iPhone SE. The maximum resolution X is around 2800, and the maximum resolution Y is around 1300. The maximum resolution occurs in iPhone 12 Pro Max, which was released last year. 
@@ -134,12 +134,13 @@ Below is a line graph showing the three different finance data we have for Apple
 library(reshape2)
 financeLong <- melt(financeTable[,c(1,2,3,4)], id.vars = 'Year')
 
+options(scipen=10000)
 financeLong %>%                 
   ggplot(aes(Year, value, col=variable)) +
   geom_line() +
   ggtitle("Line Plot for Apple Finance Data 2000 to 2020") +
   ylab("million USD") +
-  theme_bw()
+  theme_bw(13)
 ```
 
 As we can see from the graph, revenue, net income, and total assets all stay increasing during the years. Since these variables all have the same measuring scale, we can compare their growing trend by looking at the growth rate of the lines. As we can see, total assets is the one that changes most significantly among the three variables. It started growing very smoothly during 2000 to 2010, but then suddenly grew much faster than before in the later years. Different from total assets, the net income stays its smooth growth from 2000 to 2020. Revenue has a similar growth trend as total asset, and it also turns to a faster increasing rate after 2010, but it doesn’t have the same high growth rate as the total asset. 
@@ -155,7 +156,8 @@ financeTable %>%
   ylab("Numbers of Employees") +
   #scale_y_continuous(breaks = seq(0, 150000,len=1000)) +
   ggtitle("Numbers of Apple Employees from 2000 to 2020 ") +
-  theme_bw()
+  geom_text(size=2.5, aes(label=Employees), hjust=0.5, vjust=-0.5) +
+  theme_bw(13)
 ```
 
 From the bar plot, we can see that the number of employees shows a continuous increasing trend. The minimum number of employees is around 15000, and the maximum number of employees is around 150000. Notice that there are five years having 0 Employees, which are 2000 to 2004. For these years, the original dataset doesn’t record any value for the employee numbers, and they are shown as NAs in the table. For our visualization purpose, we changed the NAs values to 0. But what can cause the missing of these values? Possibly, during 2000-2004, Apple only had a handful of employees in their company, and the number of Employees is not very important to them because it doesn’t have a significant influence on Apple’s financial circumstances. Or possibly, Apple doesn’t have a mature system to count all the employees in the early years. Detailed analysis about the missing value on the Employees column has been introduced in the Missing Values chapter. Besides the missing value, another thing we discover from the plot is that the slope of increase from 2005-2015 is larger than the slope of increase from 2015 to 2020. It means that Apple has started to slow down their employment in recent years. Several reasons can cause this change. For example, Apple starts to pay more attention to the quality of employees instead of the quantity, or it may also suggest that the recent financial circumstances no longer allow Apple to employ as many employees as before. 
@@ -171,7 +173,7 @@ financeTable %>%
   xlab("Revenue in Million") +
   ylab("Number of Employees") +
   ggtitle("Revenue vs. Number of Employees from 2000-2020")+
-  theme_bw()
+  theme_bw(13)
 ```
 
 As we can see from the graph, the scatter plot clearly shows a positive linear relationship between the number of employees and the revenue. It means that as revenue increases, the number of employees also increases. We also find out that the first few points in the graph are more close to each other, but the last few points are spreaded very sparsely. It suggests that the relationship between the two variables is very similar in the previous years, and the changes are very small, but then revenue starts to increase very quickly in the later years, and there exists a larger gap between the two. This conclusion can also be seen in our line graph by comparing the gaps between the lines of employees and revenues. 
@@ -191,7 +193,7 @@ cstable %>%
   ggtitle("Smartphone Customer Satisfaction 2021") +
   #scale_y_continuous(expand = expansion(add=c(-70,5))) +
   coord_flip() +
-  theme_bw()
+  theme_bw(12)
 ```
 
 In this Cleveland dot plot, we order these smartphone models by satisfaction index, which scales from 0-100. The first five models with highest satisfaction are from Samsung. They all have a satisfaction index from 82.5 to 85. Most iPhone models have a satisfaction index from about 79 to 82. These models are all the latest iPhones with the newest changes in various features. One interesting discovery we found is that the iPhone 11, which was released more recently than iPhone X, has a lower customer satisfaction index than iPhoneX. The reason that iPhone 11 has a lower score may be caused by the fact that iPhone 11 doesn’t show much improvement from the last model, and it might disappoint some customers. Some people might think iPhone 11 does not worth extra money so they stick with iPhone X. Despite this discovery, most people still give iPhone products a high customer satisfaction index, so we can safely conclude that customers are satisfied with the changes that Apple has made to iPhone these years. We can also infer that Samsung is also making changes to their models’ features and meeting more customers’ needs.
@@ -209,7 +211,7 @@ cstable %>%
   ylab("Number of Model") +
   ggtitle("Num of Models With Satisfaction >=75") +
   geom_text(aes(label=n), hjust=0.5, vjust=-0.5) +
-  theme_bw()
+  theme_bw(13)
 ```
 
 As we can see from the graph, among all 24 models that receive the highest customer satisfaction scores, 13 are from Apple and 11 are from Samsung. Although Apple has two more models than Samsung, the difference is not significant, and we cannot draw a definite conclusion on which company performs better than the other just from this graph. But at least we know that both companies are making an effort on producing more various and advanced phones for their customers. This is also the reason why these two companies can dominate the phone market. 
