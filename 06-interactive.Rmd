@@ -3,8 +3,7 @@
 We use the iPhone Users data from [this website](https://backlinko.com/iphone-users).
 
 
-<script src="https://d3js.org/d3.v7.js"></script>
+<iframe width="780" height="405" src="https://vizhub.com/Kenny-929/cec446f871eb4c2da1e795ca3dea2286?mode=embed" title="Apple Product Interactive" frameborder="0" ></iframe>
 
-<div id="plot"></div>
 
-<script src="interactive.js"></script>
+Here is our explanation
